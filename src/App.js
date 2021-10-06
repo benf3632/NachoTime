@@ -1,13 +1,24 @@
-import logo from "./logo.svg";
 import "./App.css";
+import SideNav from "./components/SideNav";
+import { useState } from "react";
+import MoviesScreen from "./screens/MoviesScreen";
+import FavoritesScreen from "./screens/FavoritesScreen";
 
 function App() {
+  const [selectedScreen, setSelectedScreen] = useState(<MoviesScreen />);
+
+  const changeScreenHandler = (screen) => {
+    setSelectedScreen(screen);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>It's Nacho Time!!!</p>
-      </header>
+      <SideNav
+        moviesScreen={<MoviesScreen />}
+        favoritesScreen={<FavoritesScreen />}
+        changeScreenHandler={changeScreenHandler}
+      />
+      <div className="MainScreen">{selectedScreen}</div>
     </div>
   );
 }
