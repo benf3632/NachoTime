@@ -19,7 +19,7 @@ const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
 
   return (
     <ProSidebar
-      style={{ height: "100vh" }}
+      style={{ height: "100vh", position: "relative" }}
       collapsed={collapsed}
       breakPoint="md"
     >

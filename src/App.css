@@ -5,13 +5,17 @@ body {
 
 .App {
   height: 100%;
+  width: 100%;
   display: flex;
-  position: relative;
+  position: fixed;
 }
 
 .MainScreen {
-  text-align: center;
-  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  padding-left: 2vw;
+  width: 100%;
 }
 
 .SideNav {
