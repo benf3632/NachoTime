@@ -17,7 +17,7 @@ function createWindow() {
     height: 600,
   });
   mainWindow.loadURL(startUrl);
-  mainWindow.removeMenu();
+  // mainWindow.removeMenu();
   mainWindow.on("closed", () => {
     mainWindow = null;
   });

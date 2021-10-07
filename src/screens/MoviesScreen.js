@@ -1,7 +1,8 @@
 import MovieCard from "../components/MovieCard";
 import { SpringGrid, makeResponsive, measureItems } from "react-stonecutter";
 import InfiniteScroll from "react-infinite-scroller";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Loader from "react-loader-spinner";
 
 const Grid = makeResponsive(measureItems(SpringGrid), {
   maxWidth: 1920,
@@ -10,7 +11,7 @@ const Grid = makeResponsive(measureItems(SpringGrid), {
 
 const listMovies = async (page) => {
   const resp = await fetch(
-    `https://yts.mx/api/v2/list_movies.json?page=${page}`
+    `https://yts.mx/api/v2/list_movies.json?limit=50&page=${page}`
   );
   const json = await resp.json();
   return json["data"]["movies"];
@@ -18,40 +19,63 @@ const listMovies = async (page) => {
 
 const MoviesScreen = () => {
   const [movies, setMovies] = useState([]);
+  const moviesScrollRef = useRef();
 
   const loadMovies = async (page) => {
+    console.log(page);
     const new_movies = await listMovies(page);
     setMovies([...movies, ...new_movies]);
   };
 
   return (
-    <InfiniteScroll
-      useWindow={false}
-      pageStart={0}
-      loadMore={loadMovies}
-      hasMore={true}
+    <div
+      style={{ height: "100%", overflow: "auto" }}
+      ref={(ref) => (moviesScrollRef.current = ref)}
     >
-      <Grid
-        component="ul"
-        columns={20}
-        gutterWidth={20}
-        gutterHeight={20}
-        columnWidth={150}
-        itemHeight={200}
-        springConfig={{ stiffness: 170, damping: 26 }}
-      >
-        {movies.map((movie, index) => (
-          <li
-            key={index}
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadMovies}
+        hasMore={true || false}
+        useWindow={false}
+        getScrollParent={() => moviesScrollRef.current}
+        loader={
+          <div
             style={{
-              listStyle: "none",
+              width: "150px",
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "black",
+              borderRadius: "25px",
             }}
           >
-            <MovieCard movieDetails={movie} />
-          </li>
-        ))}
-      </Grid>
-    </InfiniteScroll>
+            <Loader type="TailSpin" color="grey" />
+          </div>
+        }
+      >
+        <Grid
+          component="ul"
+          columns={20}
+          gutterWidth={20}
+          gutterHeight={20}
+          columnWidth={150}
+          itemHeight={200}
+          springConfig={{ stiffness: 170, damping: 26 }}
+        >
+          {movies.map((movie, index) => (
+            <li
+              key={index}
+              style={{
+                listStyle: "none",
+              }}
+            >
+              <MovieCard movieDetails={movie} />
+            </li>
+          ))}
+        </Grid>
+      </InfiniteScroll>
+    </div>
   );
 };
 

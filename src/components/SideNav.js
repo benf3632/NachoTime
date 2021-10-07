@@ -22,6 +22,7 @@ const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
       style={{ height: "100vh", position: "relative" }}
       collapsed={collapsed}
       breakPoint="md"
+      width={"12vw"}
     >
       <SidebarHeader>
         <div
@@ -71,6 +72,7 @@ const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
       <SidebarContent>
         <Menu>
           <MenuItem
+            active={true}
             icon={<BiCameraMovie />}
             onClick={() => changeScreenHandler(moviesScreen)}
           >
