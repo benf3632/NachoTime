@@ -7,14 +7,24 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-import { FaListUl, FaHeart } from "react-icons/fa";
+// icons
+import { FaListUl, FaHeart, FaSearch } from "react-icons/fa";
 import { BiCameraMovie } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
+
+// assets
 import nacho from "../assets/nacho.png";
+
+// css
 import "react-pro-sidebar/dist/css/styles.css";
 import "../App.css";
 
-const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
+const SideNav = ({
+  moviesScreen,
+  favoritesScreen,
+  movieSearchScreen,
+  changeScreenHandler,
+}) => {
   const [collapsed, setCollapsed] = useState(true);
 
   return (
@@ -83,6 +93,12 @@ const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
             onClick={() => changeScreenHandler(favoritesScreen)}
           >
             Favorites
+          </MenuItem>
+          <MenuItem
+            icon={<FaSearch />}
+            onClick={() => changeScreenHandler(movieSearchScreen)}
+          >
+            Search Movie
           </MenuItem>
         </Menu>
       </SidebarContent>

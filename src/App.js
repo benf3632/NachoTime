@@ -1,8 +1,15 @@
-import "./App.css";
-import SideNav from "./components/SideNav";
 import { useState } from "react";
+
+// componenets
+import SideNav from "./components/SideNav";
+
+// screens
 import MoviesScreen from "./screens/MoviesScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
+import MovieSearchScreen from "./screens/MovieSearchScreen";
+
+// css
+import "./App.css";
 
 function App() {
   const [selectedScreen, setSelectedScreen] = useState(<MoviesScreen />);
@@ -16,6 +23,7 @@ function App() {
       <SideNav
         moviesScreen={<MoviesScreen />}
         favoritesScreen={<FavoritesScreen />}
+        movieSearchScreen={<MovieSearchScreen />}
         changeScreenHandler={changeScreenHandler}
       />
       <div className="MainScreen">{selectedScreen}</div>
