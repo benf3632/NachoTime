@@ -3,7 +3,6 @@
   height: 200px;
   overflow: hidden;
   object-fit: cover;
-  background-size: 100% 100%;
   border-radius: 25px;
   position: relative;
   cursor: pointer;
