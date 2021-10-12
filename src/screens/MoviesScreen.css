@@ -1,5 +1,5 @@
 .Search {
-  width: 30px;
+  width: 200px;
   height: 30px;
   border: 3px;
   display: flex;
@@ -12,10 +12,10 @@
 }
 
 .Search input {
-  width: 50px;
+  width: 150px;
   height: 85%;
   border: none;
-  display: none;
+  display: block;
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -24,15 +24,4 @@
   line-height: normal;
   outline: none;
   -webkit-appearance: none;
-}
-
-.Search:hover,
-.Search:focus input {
-  width: 200px;
-}
-
-.Search:hover input,
-.Search:focus input {
-  width: 80%;
-  display: flex;
 }

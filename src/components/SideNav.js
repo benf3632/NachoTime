@@ -19,12 +19,7 @@ import nacho from "../assets/nacho.png";
 import "react-pro-sidebar/dist/css/styles.css";
 import "../App.css";
 
-const SideNav = ({
-  moviesScreen,
-  favoritesScreen,
-  movieSearchScreen,
-  changeScreenHandler,
-}) => {
+const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
   const [collapsed, setCollapsed] = useState(true);
 
   return (
@@ -32,7 +27,7 @@ const SideNav = ({
       style={{ height: "100vh", position: "relative" }}
       collapsed={collapsed}
       breakPoint="md"
-      width={"12vw"}
+      width={"30%"}
     >
       <SidebarHeader>
         <div
@@ -93,12 +88,6 @@ const SideNav = ({
             onClick={() => changeScreenHandler(favoritesScreen)}
           >
             Favorites
-          </MenuItem>
-          <MenuItem
-            icon={<FaSearch />}
-            onClick={() => changeScreenHandler(movieSearchScreen)}
-          >
-            Search Movie
           </MenuItem>
         </Menu>
       </SidebarContent>

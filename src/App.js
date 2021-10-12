@@ -6,7 +6,6 @@ import SideNav from "./components/SideNav";
 // screens
 import MoviesScreen from "./screens/MoviesScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
-import MovieSearchScreen from "./screens/MovieSearchScreen";
 
 // css
 import "./App.css";
@@ -23,7 +22,6 @@ function App() {
       <SideNav
         moviesScreen={<MoviesScreen />}
         favoritesScreen={<FavoritesScreen />}
-        movieSearchScreen={<MovieSearchScreen />}
         changeScreenHandler={changeScreenHandler}
       />
       <div className="MainScreen">{selectedScreen}</div>
