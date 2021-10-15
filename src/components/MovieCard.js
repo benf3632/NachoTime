@@ -2,10 +2,12 @@ import "./MovieCard.css";
 import ReactStars from "react-rating-stars-component";
 import { useState } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { useHistory } from "react-router";
 
 const MovieCard = ({ movieDetails }) => {
   const [coverLoading, setCoverLoading] = useState(true);
   const [loadCover, setLoadCover] = useState(true);
+  let history = useHistory();
 
   const handleCoverLoaded = () => {
     setCoverLoading(false);
@@ -16,8 +18,13 @@ const MovieCard = ({ movieDetails }) => {
     setLoadCover(false);
     setCoverLoading(false);
   };
+
+  const handleMovieClick = () => {
+    history.push(`/movie/${movieDetails.id}`);
+  };
+
   return (
-    <div className="MovieCardWrapper">
+    <div className="MovieCardWrapper" onClick={handleMovieClick}>
       <div className="MovieCardCover">
         {coverLoading && (
           <SkeletonTheme

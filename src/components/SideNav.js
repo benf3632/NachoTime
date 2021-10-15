@@ -7,8 +7,10 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
+import { useHistory } from "react-router-dom";
+
 // icons
-import { FaListUl, FaHeart, FaSearch } from "react-icons/fa";
+import { FaListUl, FaHeart } from "react-icons/fa";
 import { BiCameraMovie } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 
@@ -21,7 +23,11 @@ import "../App.css";
 
 const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
   const [collapsed, setCollapsed] = useState(true);
-
+  let history = useHistory();
+  const onMenuItemClicked = (screen) => {
+    history.replace("/");
+    changeScreenHandler(screen);
+  };
   return (
     <ProSidebar
       style={{ height: "100vh", position: "relative" }}
@@ -79,13 +85,13 @@ const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
           <MenuItem
             active={true}
             icon={<BiCameraMovie />}
-            onClick={() => changeScreenHandler(moviesScreen)}
+            onClick={() => onMenuItemClicked(moviesScreen)}
           >
             Movies
           </MenuItem>
           <MenuItem
             icon={<FaHeart />}
-            onClick={() => changeScreenHandler(favoritesScreen)}
+            onClick={() => onMenuItemClicked(favoritesScreen)}
           >
             Favorites
           </MenuItem>

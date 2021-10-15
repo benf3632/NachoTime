@@ -73,6 +73,7 @@ export default class InfiniteScroll extends Component {
     const testOptions = {
       get passive() {
         passive = true;
+        return passive;
       },
     };
 

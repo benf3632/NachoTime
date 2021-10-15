@@ -18,6 +18,8 @@
     "react-loading-skeleton": "^2.2.0",
     "react-pro-sidebar": "^0.7.1",
     "react-rating-stars-component": "^2.2.0",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-stonecutter": "^0.3.10",
     "web-vitals": "^1.1.2"

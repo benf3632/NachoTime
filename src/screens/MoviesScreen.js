@@ -92,9 +92,6 @@ const MoviesScreen = () => {
             placeholder="Search"
             value={searchValueInput}
             onChange={(event) => setSearchValueInput(event.target.value)}
-            style={
-              searchValueInput === "" ? {} : { display: "flex", width: "85%" }
-            }
             onKeyPress={(e) => handleKeypress(e)}
           ></input>
         </div>

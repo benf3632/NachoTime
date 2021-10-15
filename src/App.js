@@ -1,18 +1,18 @@
 import { useState } from "react";
-
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 // componenets
 import SideNav from "./components/SideNav";
 
 // screens
 import MoviesScreen from "./screens/MoviesScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
+import MovieScreen from "./screens/MovieScreen";
 
 // css
 import "./App.css";
 
 function App() {
   const [selectedScreen, setSelectedScreen] = useState(<MoviesScreen />);
-
   const changeScreenHandler = (screen) => {
     setSelectedScreen(screen);
   };
@@ -24,7 +24,16 @@ function App() {
         favoritesScreen={<FavoritesScreen />}
         changeScreenHandler={changeScreenHandler}
       />
-      <div className="MainScreen">{selectedScreen}</div>
+      <Router>
+        <Switch>
+          <Route path="/movie/:movieID">
+            <MovieScreen />
+          </Route>
+          <Route path="/">
+            <div className="MainScreen">{selectedScreen}</div>
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
