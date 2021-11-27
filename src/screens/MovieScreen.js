@@ -2,7 +2,11 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { useEffect, useState } from "react";
+
+import MaterialButton from "../components/MaterialButton";
+
 import IMDBLogo from "../assets/IMDB_Logo.svg";
+
 import "./MovieScreen.css";
 
 const fetchMovieDetails = async (movieId) => {
@@ -37,8 +41,7 @@ const MovieScreen = () => {
 				<div className="MovieScreenMovieCoverContainer">
 					<img
 						className="MovieScreenMovieCover"
-						src={movieDetails && movieDetails.large_cover_image}
-					/>
+						src={movieDetails && movieDetails.large_cover_image} />
 				</div>
 				<div className="MovieScreenMovieDetailsContainer">
 					<div>
@@ -58,7 +61,7 @@ const MovieScreen = () => {
 						<p>{movieDetails && movieDetails.description_full}</p>
 					</div>
 					<div>
-						<button className="MovieScreenWatchButton">Watch Movie</button>
+						<MaterialButton>Watch Movie</MaterialButton>
 					</div>
 				</div>
 			</div>
