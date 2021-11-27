@@ -41,7 +41,8 @@ const MovieScreen = () => {
 				<div className="MovieScreenMovieCoverContainer">
 					<img
 						className="MovieScreenMovieCover"
-						src={movieDetails && movieDetails.large_cover_image} />
+						src={movieDetails && movieDetails.large_cover_image}
+					/>
 				</div>
 				<div className="MovieScreenMovieDetailsContainer">
 					<div>
@@ -49,19 +50,13 @@ const MovieScreen = () => {
 							{movieDetails && movieDetails.title_long}
 						</p>
 						<p>{movieDetails && movieDetails.genres.join(" - ")}</p>
-						{/* <img */}
-						{/* 	src={IMDBLogo} */}
-						{/* 	alt="imdb" */}
-						{/* 	style={{ */}
-						{/* 		width: "10%", */}
-						{/* 		display: "inline-block", */}
-						{/* 		objectFit: "contain", */}
-						{/* 	}} */}
-						{/* /> */}
 						<p>{movieDetails && movieDetails.description_full}</p>
 					</div>
 					<div>
 						<MaterialButton>Watch Movie</MaterialButton>
+						<MaterialButton style={{ marginLeft: "1%" }}>
+							Download Movie
+						</MaterialButton>
 					</div>
 				</div>
 			</div>
