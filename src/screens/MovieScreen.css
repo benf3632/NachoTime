@@ -1,0 +1,53 @@
+.MovieScreenContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 100%;
+	padding: 2%;
+}
+
+.MovieScreenTitleContainer {
+}
+
+.MovieScreenBackIcon {
+	/* width: 100%; */
+	/* height: 100%; */
+	color: white;
+}
+
+.MovieScreenTitle {
+	color: white;
+	font-weight: bold;
+	font-size: 1.5rem;
+	margin-block-start: 0em;
+}
+
+.MovieScreenContentContainer {
+	display: flex;
+	flex-direction: row;
+	padding: 5%;
+}
+
+.MovieScreenMovieCoverContainer {
+	width: 30%;
+	border-radius: 5%;
+	overflow: hidden;
+}
+
+.MovieScreenMovieCover {
+	width: 100%;
+}
+
+.MovieScreenMovieDetailsContainer {
+	display: flex;
+	flex: 1;
+	color: white;
+	padding-left: 2%;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.MovieScreenWatchButton {
+	background-color: #29b6f6;
+}
+

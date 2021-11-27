@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { useEffect, useState } from "react";
 import IMDBLogo from "../assets/IMDB_Logo.svg";
+import "./MovieScreen.css";
 
 const fetchMovieDetails = async (movieId) => {
 	const response = await fetch(
@@ -26,104 +27,38 @@ const MovieScreen = () => {
 	}, [movieID]);
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				width: "100%",
-				flexDirection: "column",
-				padding: "40px",
-			}}
-		>
-			<div
-				style={{
-					display: "flex",
-					width: "100%",
-					flexDirection: "row",
-				}}
-			>
-				<Link style={{}} to="/">
-					<MdOutlineArrowBackIos
-						style={{
-							width: "100%",
-							height: "100%",
-							color: "white",
-						}}
-					/>
+		<div className="MovieScreenContainer">
+			<div className="MovieScreenTitleContainer">
+				<Link to="/">
+					<MdOutlineArrowBackIos className="MovieScreenBackIcon" />
 				</Link>
-				<span
-					style={{
-						flex: 1,
-						justifyContent: "center",
-						display: "flex",
-						color: "white",
-						fontWeight: "bold",
-						fontSize: "1.5em",
-					}}
-				>
-					{movieDetails && movieDetails.title_long}
-				</span>
 			</div>
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "row",
-					width: "100%",
-					paddingTop: "3%",
-				}}
-			>
-				<div
-					style={{
-						width: "25%",
-					}}
-				>
+			<div className="MovieScreenContentContainer">
+				<div className="MovieScreenMovieCoverContainer">
 					<img
+						className="MovieScreenMovieCover"
 						src={movieDetails && movieDetails.large_cover_image}
-						style={{
-							width: "100%",
-						}}
 					/>
 				</div>
-				<div
-					style={{
-						display: "flex",
-						flex: 2,
-						color: "white",
-						paddingLeft: "2%",
-						paddingRight: "2%",
-						flexDirection: "column",
-						justifyContent: "space-between",
-					}}
-				>
-					<span
-						style={{
-							fontSize: "1em",
-							height: "100%",
-							display: 'flex',
-							justifyContent:'space-between',
-							flexDirection: 'column'
-						}}
-					>
-						<div style={{
-							height: '100%',
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'space-evenly'
-							}}>
-							{movieDetails && movieDetails.genres.join(" - ")}
-							<img
-								src={IMDBLogo}
-								alt="imdb"
-								style={{
-									width: '10%',
-									display: "inline-block",
-									objectFit: "contain",
-								}}
-							/>
-						</div>
-						{movieDetails && movieDetails.description_full}
-					</span>
+				<div className="MovieScreenMovieDetailsContainer">
 					<div>
-						<span>Test</span>
+						<p className="MovieScreenTitle">
+							{movieDetails && movieDetails.title_long}
+						</p>
+						<p>{movieDetails && movieDetails.genres.join(" - ")}</p>
+						{/* <img */}
+						{/* 	src={IMDBLogo} */}
+						{/* 	alt="imdb" */}
+						{/* 	style={{ */}
+						{/* 		width: "10%", */}
+						{/* 		display: "inline-block", */}
+						{/* 		objectFit: "contain", */}
+						{/* 	}} */}
+						{/* /> */}
+						<p>{movieDetails && movieDetails.description_full}</p>
+					</div>
+					<div>
+						<button className="MovieScreenWatchButton">Watch Movie</button>
 					</div>
 				</div>
 			</div>
