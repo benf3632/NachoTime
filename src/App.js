@@ -12,30 +12,30 @@ import MovieScreen from "./screens/MovieScreen";
 import "./App.css";
 
 function App() {
-  const [selectedScreen, setSelectedScreen] = useState(<MoviesScreen />);
-  const changeScreenHandler = (screen) => {
-    setSelectedScreen(screen);
-  };
+	const [selectedScreen, setSelectedScreen] = useState(<MoviesScreen />);
+	const changeScreenHandler = (screen) => {
+		setSelectedScreen(screen);
+	};
 
-  return (
-    <div className="App">
-      <SideNav
-        moviesScreen={<MoviesScreen />}
-        favoritesScreen={<FavoritesScreen />}
-        changeScreenHandler={changeScreenHandler}
-      />
-      <Router>
-        <Switch>
-          <Route path="/movie/:movieID">
-            <MovieScreen />
-          </Route>
-          <Route path="/">
-            <div className="MainScreen">{selectedScreen}</div>
-          </Route>
-        </Switch>
-      </Router>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Router>
+				<SideNav
+					moviesScreen={<MoviesScreen />}
+					favoritesScreen={<FavoritesScreen />}
+					changeScreenHandler={changeScreenHandler}
+				/>
+				<Switch>
+					<Route path="/movie/:movieID">
+						<MovieScreen />
+					</Route>
+					<Route path="/">
+						<div className="MainScreen">{selectedScreen}</div>
+					</Route>
+				</Switch>
+			</Router>
+		</div>
+	);
 }
 
 export default App;
