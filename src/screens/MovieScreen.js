@@ -2,6 +2,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { useEffect, useState } from "react";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import MaterialButton from "../components/MaterialButton";
 
@@ -20,6 +21,11 @@ const fetchMovieDetails = async (movieId) => {
 const MovieScreen = () => {
 	let { movieID } = useParams();
 	const [movieDetails, setMovieDetails] = useState(null);
+	const [coverLoading, setCoverLoading] = useState(true);
+
+	const handleCoverLoaded = () => {
+		setCoverLoading(false);
+	};
 
 	useEffect(() => {
 		const fetchMovie = async () => {
@@ -32,15 +38,22 @@ const MovieScreen = () => {
 
 	return (
 		<div className="MovieScreenContainer">
-			<div className="MovieScreenTitleContainer">
-				<Link to="/">
+			{/* <div className="" style={{top: "10%"}}> */}
+			<Link to="/" className="MovieScreenBackIconContainer">
 					<MdOutlineArrowBackIos className="MovieScreenBackIcon" />
 				</Link>
-			</div>
+			{/* </div> */}
 			<div className="MovieScreenContentContainer">
 				<div className="MovieScreenMovieCoverContainer">
+					{coverLoading && (
+						<SkeletonTheme className="MovieScreenMovieCover" highlightColor="#444" color="#202020">
+							<Skeleton width={300} height={300} className="MovieScreenMovieCover" />
+						</SkeletonTheme>
+					)}
 					<img
 						className="MovieScreenMovieCover"
+						style={coverLoading ? { display: "none"} : {}}
+						onLoad={handleCoverLoaded}
 						src={movieDetails && movieDetails.large_cover_image}
 					/>
 				</div>

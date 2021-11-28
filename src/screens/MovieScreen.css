@@ -6,12 +6,12 @@
 	padding: 2%;
 }
 
-.MovieScreenTitleContainer {
+.MovieScreenBackIconContainer {
+	position: absolute;
+	top: 10%;
 }
 
 .MovieScreenBackIcon {
-	/* width: 100%; */
-	/* height: 100%; */
 	color: white;
 }
 
