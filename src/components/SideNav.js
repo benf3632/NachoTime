@@ -10,9 +10,9 @@ import {
 import { useHistory } from "react-router-dom";
 
 // icons
-import { FaListUl, FaHeart } from "react-icons/fa";
+import { FaListUl, FaHeart, FaDownload } from "react-icons/fa";
 import { BiCameraMovie } from "react-icons/bi";
-import { FiSettings } from "react-icons/fi";
+import { FiSettings, } from "react-icons/fi";
 
 // assets
 import nacho from "../assets/nacho.png";
@@ -21,7 +21,7 @@ import nacho from "../assets/nacho.png";
 import "react-pro-sidebar/dist/css/styles.css";
 import "../App.css";
 
-const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
+const SideNav = ({ moviesScreen, favoritesScreen, downloadsScreen, changeScreenHandler }) => {
 	const [collapsed, setCollapsed] = useState(true);
 	let history = useHistory();
 	const onMenuItemClicked = (screen) => {
@@ -96,6 +96,12 @@ const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
 						onClick={() => onMenuItemClicked(favoritesScreen)}
 					>
 						Favorites
+					</MenuItem>
+					<MenuItem
+						icon={<FaDownload />}
+						onClick={() => onMenuItemClicked(downloadsScreen)}
+					>
+						Downloads
 					</MenuItem>
 				</Menu>
 			</SidebarContent>

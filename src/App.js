@@ -8,6 +8,7 @@ import SideNav from "./components/SideNav";
 import MoviesScreen from "./screens/MoviesScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import MovieScreen from "./screens/MovieScreen";
+import DownloadsScreen from "./screens/DownloadsScreen";
 
 // css
 import "./App.css";
@@ -24,6 +25,7 @@ function App() {
 				<SideNav
 					moviesScreen={<MoviesScreen />}
 					favoritesScreen={<FavoritesScreen />}
+					downloadsScreen={<DownloadsScreen />}
 					changeScreenHandler={changeScreenHandler}
 				/>
 				<Switch>

@@ -1,9 +1,8 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-
 
 // components
 import MaterialButton from "../components/MaterialButton";
@@ -40,7 +39,7 @@ const MovieScreen = () => {
 
 	const handleDownloadMovieClick = () => {
 		const torrentId = `magnet:?xt=urn:btih:${movieDetails.torrents[2].hash}&${trackers}`;
-		ipcRenderer.send('wt-start-torrenting', torrentId);
+		ipcRenderer.send("wt-start-torrenting", torrentId);
 	};
 
 	useEffect(() => {
@@ -54,11 +53,9 @@ const MovieScreen = () => {
 
 	return (
 		<div className="MovieScreenContainer">
-			{/* <div className="" style={{top: "10%"}}> */}
 			<Link to="/" className="MovieScreenBackIconContainer">
 				<MdOutlineArrowBackIos className="MovieScreenBackIcon" />
 			</Link>
-			{/* </div> */}
 			<div className="MovieScreenContentContainer">
 				<div className="MovieScreenMovieCoverContainer">
 					{coverLoading && (
