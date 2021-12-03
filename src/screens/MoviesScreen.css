@@ -1,5 +1,5 @@
 .Search {
-  width: 200px;
+  width: 15%;
   height: 30px;
   border: 3px;
   display: flex;
@@ -12,7 +12,7 @@
 }
 
 .Search input {
-  width: 160px;
+  width: 80%;
   height: 85%;
   border: none;
   display: block;

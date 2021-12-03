@@ -8,6 +8,7 @@ const DownloadsScreen = () => {
 
 	useEffect(() => {
 		ipcRenderer.on("wt-progress", (event, progress) => {
+			console.log(progress);
 			setProgress(progress);
 		});
 		return () => ipcRenderer.removeAllListeners("wt-progress");

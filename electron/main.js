@@ -18,12 +18,15 @@ function createWindow() {
 			slashes: true,
 		});
 	mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: 1300,
+		height: 720,
+		minWidth: 1300,
+		minHeight: 720,
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
 		},
+		icon: path.join(__dirname, "./icon.png"),
 	});
 	mainWindow.loadURL(startUrl);
 	// mainWindow.removeMenu();
@@ -33,7 +36,9 @@ function createWindow() {
 	setInterval(updateTorrentProgress, 1000);
 }
 
-app.on("ready", createWindow);
+app.on("ready", () => {
+	createWindow();
+});
 
 app.on("window-all-closed", () => {
 	if (process.platform != "darwin") {
@@ -48,16 +53,18 @@ app.on("activate", () => {
 });
 
 // Web Torrents events
+
+// start torrenting event
 ipcMain.on("wt-start-torrenting", (event, torrentId) => {
-	try {
-		client.add(torrentId, { path: "/home/cookies/webtorrent" });
-	} catch {}
+	client.add(torrentId, { path: path.join(app.getPath("userData"), "downloads") });
 });
 
+// get torrents event
 ipcMain.on("wt-get-torrents", (event) => {
 	event.returnValue = getTorrentProgress();
 });
 
+// sends torrent progress to renderer
 const updateTorrentProgress = () => {
 	const progress = getTorrentProgress();
 
@@ -69,6 +76,7 @@ const updateTorrentProgress = () => {
 	prevProgress = progress;
 };
 
+// gets the progress of all torrents
 const getTorrentProgress = () => {
 	const progress = client.progress;
 	const hasActiveTorrents = client.torrents.some(
