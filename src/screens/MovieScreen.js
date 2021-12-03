@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+
+// actions
+import { startTorrent } from "../actions/webTorrent";
 
 // components
 import MaterialButton from "../components/MaterialButton";
@@ -28,7 +32,7 @@ const fetchMovieDetails = async (movieId) => {
 	return json.data.movie;
 };
 
-const MovieScreen = () => {
+const MovieScreen = ({ startTorrent }) => {
 	let { movieID } = useParams();
 	const [movieDetails, setMovieDetails] = useState(null);
 	const [coverLoading, setCoverLoading] = useState(true);
@@ -39,7 +43,7 @@ const MovieScreen = () => {
 
 	const handleDownloadMovieClick = () => {
 		const torrentId = `magnet:?xt=urn:btih:${movieDetails.torrents[2].hash}&${trackers}`;
-		ipcRenderer.send("wt-start-torrenting", torrentId);
+		startTorrent(`${movieDetails.title_long} (${movieDetails.torrents[2].quality})`, torrentId, movieDetails.torrents[2].hash.toLowerCase(), "/home/cookies/webtorrent");
 	};
 
 	useEffect(() => {
@@ -101,4 +105,10 @@ const MovieScreen = () => {
 	);
 };
 
-export default MovieScreen;
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+	startTorrent: (torrentName, magnetURI, path) => dispatch(startTorrent(torrentName, magnetURI, path)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieScreen);

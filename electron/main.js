@@ -56,8 +56,23 @@ app.on("activate", () => {
 
 // start torrenting event
 ipcMain.on("wt-start-torrenting", (event, torrentId) => {
-	client.add(torrentId, {
+	const torrent = client.add(torrentId, {
 		path: path.join(app.getPath("userData"), "downloads"),
+	});
+	torrent.on("ready", () => {
+		event.reply("wt-torrenting-started", {
+			magnetUri: torrent.magnetURI,
+			infoHash: torrent.infoHash,
+			name: torrent.name,
+			ready: torrent.ready,
+			progress: torrent.progress,
+			downloaded: torrent.downloaded,
+			downloadSpeed: torrent.downloadSpeed,
+			uploadSpeed: torrent.uploadSpeed,
+			numPeers: torrent.numPeers,
+			length: torrent.length,
+			paused: false,
+		});
 	});
 });
 
@@ -95,7 +110,9 @@ const getTorrentProgress = () => {
 		(torrent) => torrent.progress !== 1
 	);
 
-	const torrentProg = client.torrents.map((torrent) => {
+	const torrentProg = client.torrents
+		.filter((torrent) => torrent.ready)
+		.map((torrent) => {
 		const mp4File =
 			torrent.files &&
 			torrent.files.find((file) => {
@@ -111,9 +128,9 @@ const getTorrentProgress = () => {
 		};
 
 		return {
-			torrentMagnetUri: torrent.magnetURI,
-			torrentInfoHash: torrent.infoHash,
-			torrentName: torrent.name,
+			magnetUri: torrent.magnetURI,
+			infoHash: torrent.infoHash,
+			name: torrent.name,
 			ready: torrent.ready,
 			progress: torrent.progress,
 			downloaded: torrent.downloaded,
@@ -121,9 +138,8 @@ const getTorrentProgress = () => {
 			uploadSpeed: torrent.uploadSpeed,
 			numPeers: torrent.numPeers,
 			length: torrent.length,
-			bitfield: torrent.bitfield,
-			mp4file: fileProg,
-			paused: torrent.paused,
+			file: fileProg,
+			paused: torrent.paused
 		};
 	});
 
