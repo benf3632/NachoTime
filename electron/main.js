@@ -56,12 +56,24 @@ app.on("activate", () => {
 
 // start torrenting event
 ipcMain.on("wt-start-torrenting", (event, torrentId) => {
-	client.add(torrentId, { path: path.join(app.getPath("userData"), "downloads") });
+	client.add(torrentId, {
+		path: path.join(app.getPath("userData"), "downloads"),
+	});
 });
 
 // get torrents event
 ipcMain.on("wt-get-torrents", (event) => {
 	event.returnValue = getTorrentProgress();
+});
+
+ipcMain.on("wt-pause-torrenting", (event, magnetUri) => {
+	const torrent = client.get(magnetUri);
+	torrent.pause();
+});
+
+ipcMain.on("wt-resume-torrenting", (event, magnetUri) => {
+	const torrent = client.get(magnetUri);
+	torrent.resume();
 });
 
 // sends torrent progress to renderer
@@ -99,6 +111,7 @@ const getTorrentProgress = () => {
 		};
 
 		return {
+			torrentMagnetUri: torrent.magnetURI,
 			torrentInfoHash: torrent.infoHash,
 			torrentName: torrent.name,
 			ready: torrent.ready,
@@ -110,6 +123,7 @@ const getTorrentProgress = () => {
 			length: torrent.length,
 			bitfield: torrent.bitfield,
 			mp4file: fileProg,
+			paused: torrent.paused,
 		};
 	});
 

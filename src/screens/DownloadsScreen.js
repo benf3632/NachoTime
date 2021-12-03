@@ -25,6 +25,14 @@ const parseSpeed = (speed) => {
 const DownloadsScreen = () => {
 	const [progress, setProgress] = useState(null);
 
+	const handleTorrentPauseing = (magnetUri) => {
+		ipcRenderer.send("wt-pause-torrenting", magnetUri);
+	};
+
+	const handleTorrentResuming = (magnetUri) => {
+		ipcRenderer.send("wt-resume-torrenting", magnetUri);
+	};
+
 	useEffect(() => {
 		ipcRenderer.on("wt-progress", (event, progress) => {
 			console.log(progress);
@@ -48,7 +56,7 @@ const DownloadsScreen = () => {
 										parseFloat(torrent.progress) * 100
 									)}
 								/>
-								<p className="TorrentProgressInfoConatiner">
+								<div className="TorrentProgressInfoContainer">
 									<div>
 										{<IoMdCloudDownload />}
 										{"    "}
@@ -58,10 +66,37 @@ const DownloadsScreen = () => {
 										{parseSpeed(torrent.uploadSpeed)}
 									</div>
 									<div>
-										{<AiOutlinePauseCircle className="ClickableIcon" />}{" "}
-										{<FaTrashAlt className="ClickableIcon" onClick={() => console.log("Deleted Torrent")} />}
+										{torrent.paused ? (
+											<AiOutlinePlayCircle
+												onClick={() =>
+													handleTorrentResuming(
+														torrent.torrentMagnetUri
+													)
+												}
+												className="ClickableIcon"
+											/>
+										) : (
+											<AiOutlinePauseCircle
+												onClick={() =>
+													handleTorrentPauseing(
+														torrent.torrentMagnetUri
+													)
+												}
+												className="ClickableIcon"
+											/>
+										)}{" "}
+										{
+											<FaTrashAlt
+												className="ClickableIcon"
+												onClick={() =>
+													console.log(
+														"Deleted Torrent"
+													)
+												}
+											/>
+										}
 									</div>
-								</p>
+								</div>
 							</div>
 						</div>
 					);

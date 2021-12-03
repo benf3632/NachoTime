@@ -18,9 +18,10 @@
 
 .TorrentProgressInfoContainer {
 	display: flex;
-	flex-direction: row;
 	justify-content: space-between;
-
+	flex-direction: row;
+	padding-top: 2%;
+	padding-bottom: 2%;
 }
 
 .ClickableIcon {
