@@ -1,0 +1,28 @@
+.TorrentsProgressContainer {
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-right: 10%;
+	padding-top: 4%;
+}
+
+.TorrentProgress {
+	background-color: #424242;
+	width: 50%;
+	padding-left: 2%;
+	padding-right: 2%;
+	margin-top: 1%;
+}
+
+.TorrentProgressInfoContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+}
+
+.ClickableIcon {
+	cursor: pointer;
+}
