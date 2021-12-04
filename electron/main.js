@@ -56,6 +56,7 @@ app.on("activate", () => {
 
 // start torrenting event
 ipcMain.on("wt-start-torrenting", (event, torrentId) => {
+	if (!torrentId) return;
 	const torrent = client.add(torrentId, {
 		path: path.join(app.getPath("userData"), "downloads"),
 	});
@@ -72,8 +73,22 @@ ipcMain.on("wt-start-torrenting", (event, torrentId) => {
 			numPeers: torrent.numPeers,
 			length: torrent.length,
 			paused: false,
+			stopped: false,
 		});
 	});
+});
+
+ipcMain.on("wt-stop-torrenting", (event, magnetURI) => {
+	if (!magnetURI) return;
+	console.log("Stopping: ", magnetURI);
+	const torrent = client.get(magnetURI);
+	torrent.destroy({ destroyStore: false });
+});
+
+ipcMain.on("wt-destory-torrent", (event, magnetURI) => {
+	if (!magnetURI) return;
+	const torrent = client.get(magnetURI);
+	torrent.destroy({ destroyStore: true });
 });
 
 // get torrents event
@@ -113,35 +128,36 @@ const getTorrentProgress = () => {
 	const torrentProg = client.torrents
 		.filter((torrent) => torrent.ready)
 		.map((torrent) => {
-		const mp4File =
-			torrent.files &&
-			torrent.files.find((file) => {
-				return file.name.endsWith(".mp4");
-			});
+			const mp4File =
+				torrent.files &&
+				torrent.files.find((file) => {
+					return file.name.endsWith(".mp4");
+				});
 
-		const fileProg = mp4File && {
-			name: mp4File.name,
-			progress: mp4File.progress,
-			length: mp4File.length,
-			downloaded: mp4File.downloaded,
-			path: mp4File.path,
-		};
+			const fileProg = mp4File && {
+				name: mp4File.name,
+				progress: mp4File.progress,
+				length: mp4File.length,
+				downloaded: mp4File.downloaded,
+				path: mp4File.path,
+			};
 
-		return {
-			magnetUri: torrent.magnetURI,
-			infoHash: torrent.infoHash,
-			name: torrent.name,
-			ready: torrent.ready,
-			progress: torrent.progress,
-			downloaded: torrent.downloaded,
-			downloadSpeed: torrent.downloadSpeed,
-			uploadSpeed: torrent.uploadSpeed,
-			numPeers: torrent.numPeers,
-			length: torrent.length,
-			file: fileProg,
-			paused: torrent.paused
-		};
-	});
+			return {
+				magnetUri: torrent.magnetURI,
+				infoHash: torrent.infoHash,
+				name: torrent.name,
+				ready: torrent.ready,
+				progress: torrent.progress,
+				downloaded: torrent.downloaded,
+				downloadSpeed: torrent.downloadSpeed,
+				uploadSpeed: torrent.uploadSpeed,
+				numPeers: torrent.numPeers,
+				length: torrent.length,
+				file: fileProg,
+				paused: torrent.paused,
+				stopped: false,
+			};
+		});
 
 	return {
 		torrents: torrentProg,

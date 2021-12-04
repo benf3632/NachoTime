@@ -8,7 +8,12 @@ import { AiOutlinePauseCircle, AiOutlinePlayCircle } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 
 // actions
-import { updateTorrents } from "../actions/webTorrent";
+import {
+	updateTorrents,
+	stopTorrent,
+	startTorrent,
+	deleteTorrent,
+} from "../actions/webTorrent";
 
 // css
 import "./DownloadsScreen.css";
@@ -28,13 +33,19 @@ const parseSpeed = (speed) => {
 	return `${speed.toFixed(2)} B/s`;
 };
 
-const DownloadsScreen = ({ torrents, updateTorrents }) => {
-	const handleTorrentPauseing = (magnetUri) => {
-		ipcRenderer.send("wt-pause-torrenting", magnetUri);
+const DownloadsScreen = ({
+	torrents,
+	updateTorrents,
+	stopTorrent,
+	startTorrent,
+	deleteTorrent
+}) => {
+	const handleTorrentStopping = (magnetUri) => {
+		stopTorrent(magnetUri);
 	};
 
-	const handleTorrentResuming = (magnetUri) => {
-		ipcRenderer.send("wt-resume-torrenting", magnetUri);
+	const handleTorrentStarting = (magnetUri) => {
+		startTorrent(magnetUri);
 	};
 
 	useEffect(() => {
@@ -69,11 +80,11 @@ const DownloadsScreen = ({ torrents, updateTorrents }) => {
 										{parseSpeed(torrent.uploadSpeed)}
 									</div>
 									<div>
-										{torrent.paused ? (
+										{torrent.stopped ? (
 											<AiOutlinePlayCircle
 												onClick={() =>
-													handleTorrentResuming(
-														torrent.torrentMagnetUri
+													handleTorrentStarting(
+														torrent.magnetUri
 													)
 												}
 												className="ClickableIcon"
@@ -81,7 +92,7 @@ const DownloadsScreen = ({ torrents, updateTorrents }) => {
 										) : (
 											<AiOutlinePauseCircle
 												onClick={() =>
-													handleTorrentPauseing(
+													handleTorrentStopping(
 														torrent.magnetUri
 													)
 												}
@@ -92,9 +103,7 @@ const DownloadsScreen = ({ torrents, updateTorrents }) => {
 											<FaTrashAlt
 												className="ClickableIcon"
 												onClick={() =>
-													console.log(
-														"Deleted Torrent"
-													)
+														deleteTorrent(torrent.magnetUri)
 												}
 											/>
 										}
@@ -114,6 +123,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	updateTorrents: (torrents) => dispatch(updateTorrents(torrents)),
+	stopTorrent: (magnetURI) => dispatch(stopTorrent(magnetURI)),
+	startTorrent: (magnetURI) => dispatch(startTorrent(magnetURI)),
+	deleteTorrent: (magnetURI) => dispatch(deleteTorrent(magnetURI))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DownloadsScreen);

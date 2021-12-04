@@ -6,7 +6,7 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 // actions
-import { startTorrent } from "../actions/webTorrent";
+import { startNewTorrent } from "../actions/webTorrent";
 
 // components
 import MaterialButton from "../components/MaterialButton";
@@ -16,9 +16,6 @@ import IMDBLogo from "../assets/IMDB_Logo.svg";
 
 // css
 import "./MovieScreen.css";
-
-// electron
-const { ipcRenderer } = window.require("electron");
 
 // consts
 const trackers =
@@ -32,7 +29,7 @@ const fetchMovieDetails = async (movieId) => {
 	return json.data.movie;
 };
 
-const MovieScreen = ({ startTorrent }) => {
+const MovieScreen = ({ startNewTorrent }) => {
 	let { movieID } = useParams();
 	const [movieDetails, setMovieDetails] = useState(null);
 	const [coverLoading, setCoverLoading] = useState(true);
@@ -43,7 +40,12 @@ const MovieScreen = ({ startTorrent }) => {
 
 	const handleDownloadMovieClick = () => {
 		const torrentId = `magnet:?xt=urn:btih:${movieDetails.torrents[2].hash}&${trackers}`;
-		startTorrent(`${movieDetails.title_long} (${movieDetails.torrents[2].quality})`, torrentId, movieDetails.torrents[2].hash.toLowerCase(), "/home/cookies/webtorrent");
+		startNewTorrent(
+			`${movieDetails.title_long} (${movieDetails.torrents[2].quality})`,
+			torrentId,
+			movieDetails.torrents[2].hash.toLowerCase(),
+			"/home/cookies/webtorrent"
+		);
 	};
 
 	useEffect(() => {
@@ -105,10 +107,9 @@ const MovieScreen = ({ startTorrent }) => {
 	);
 };
 
-const mapStateToProps = (state) => ({});
-
 const mapDispatchToProps = (dispatch) => ({
-	startTorrent: (torrentName, magnetURI, path) => dispatch(startTorrent(torrentName, magnetURI, path)),
+	startNewTorrent: (torrentName, magnetURI, infoHash, path) =>
+		dispatch(startNewTorrent(torrentName, magnetURI, infoHash, path)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieScreen);
+export default connect((state) => {}, mapDispatchToProps)(MovieScreen);
