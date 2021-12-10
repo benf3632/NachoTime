@@ -13,9 +13,10 @@ const alertClass = (type) => {
 
 const Alert = ({ onClose, message, type }) => {
 	useEffect(() => {
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			onClose();
-		}, 5000);
+		}, 3000);
+		return () => clearTimeout(timeout);
 	}, [onClose]);
 
 	return (

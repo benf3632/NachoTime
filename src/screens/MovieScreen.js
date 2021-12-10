@@ -13,7 +13,7 @@ import { addMessage } from "../actions/messages";
 import MaterialButton from "../components/MaterialButton";
 
 // assets
-import IMDBLogo from "../assets/IMDB_Logo.svg";
+// import IMDBLogo from "../assets/IMDB_Logo.svg";
 
 // css
 import "./MovieScreen.css";
@@ -30,7 +30,7 @@ const fetchMovieDetails = async (movieId) => {
 	return json.data.movie;
 };
 
-const MovieScreen = ({ startNewTorrent, addMessage }) => {
+const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	let { movieID } = useParams();
 	const [movieDetails, setMovieDetails] = useState(null);
 	const [coverLoading, setCoverLoading] = useState(true);
@@ -40,11 +40,17 @@ const MovieScreen = ({ startNewTorrent, addMessage }) => {
 	};
 
 	const handleDownloadMovieClick = () => {
-		const torrentId = `magnet:?xt=urn:btih:${movieDetails.torrents[2].hash}&${trackers}`;
+		const torrentToDownload = movieDetails.torrents[2];
+		const torrentId = `magnet:?xt=urn:btih:${torrentToDownload.hash}&${trackers}`;
+		const torrentExists = torrents.some((torrent) => torrent.infoHash === torrentToDownload.hash.toLowerCase());
+		if (torrentExists) {
+			addMessage("The Movie is already in downloads!", "error");
+			return;
+		}
 		startNewTorrent(
-			`${movieDetails.title_long} (${movieDetails.torrents[2].quality})`,
+			`${torrentToDownload.title_long} (${torrentToDownload.quality})`,
 			torrentId,
-			movieDetails.torrents[2].hash.toLowerCase(),
+			torrentToDownload.hash.toLowerCase(),
 			"/home/cookies/webtorrent"
 		);
 		addMessage(`Started downloading: ${movieDetails.title_long}!`, 'success');
@@ -115,4 +121,8 @@ const mapDispatchToProps = (dispatch) => ({
 	addMessage: (message, type) => dispatch(addMessage(message, type)),
 });
 
-export default connect((state) => ({}), mapDispatchToProps)(MovieScreen);
+const mapStateToProps = (state) => ({
+	torrents: state.torrents,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieScreen);
