@@ -38,7 +38,7 @@ const DownloadsScreen = ({
 	updateTorrents,
 	stopTorrent,
 	startTorrent,
-	deleteTorrent
+	deleteTorrent,
 }) => {
 	const handleTorrentStopping = (magnetUri) => {
 		stopTorrent(magnetUri);
@@ -56,7 +56,20 @@ const DownloadsScreen = ({
 	}, []);
 
 	return (
-		<div className="TorrentsProgressContainer">
+		<div
+			className={`TorrentsProgressContainer ${
+				torrents.length === 0 ? "DownloadsEmpty" : ""
+			}`}
+		>
+			{torrents.length === 0 && (
+				<p
+					style={{
+						color: "gray",
+					}}
+				>
+					Downloads list is empty
+				</p>
+			)}
 			{torrents &&
 				torrents.map((torrent) => {
 					return (
@@ -103,7 +116,9 @@ const DownloadsScreen = ({
 											<FaTrashAlt
 												className="ClickableIcon"
 												onClick={() =>
-														deleteTorrent(torrent.magnetUri)
+													deleteTorrent(
+														torrent.magnetUri
+													)
 												}
 											/>
 										}
@@ -125,7 +140,7 @@ const mapDispatchToProps = (dispatch) => ({
 	updateTorrents: (torrents) => dispatch(updateTorrents(torrents)),
 	stopTorrent: (magnetURI) => dispatch(stopTorrent(magnetURI)),
 	startTorrent: (magnetURI) => dispatch(startTorrent(magnetURI)),
-	deleteTorrent: (magnetURI) => dispatch(deleteTorrent(magnetURI))
+	deleteTorrent: (magnetURI) => dispatch(deleteTorrent(magnetURI)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DownloadsScreen);

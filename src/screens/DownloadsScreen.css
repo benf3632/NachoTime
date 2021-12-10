@@ -8,6 +8,12 @@
 	padding-top: 4%;
 }
 
+.DownloadsEmpty {
+	margin-right: 0%;
+	padding-top: 0%;
+	height: 100%;
+}
+
 .TorrentProgress {
 	background-color: #424242;
 	min-width: 50%;
