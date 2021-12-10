@@ -7,6 +7,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 // actions
 import { startNewTorrent } from "../actions/webTorrent";
+import { addMessage } from "../actions/messages";
 
 // components
 import MaterialButton from "../components/MaterialButton";
@@ -29,7 +30,7 @@ const fetchMovieDetails = async (movieId) => {
 	return json.data.movie;
 };
 
-const MovieScreen = ({ startNewTorrent }) => {
+const MovieScreen = ({ startNewTorrent, addMessage }) => {
 	let { movieID } = useParams();
 	const [movieDetails, setMovieDetails] = useState(null);
 	const [coverLoading, setCoverLoading] = useState(true);
@@ -46,6 +47,7 @@ const MovieScreen = ({ startNewTorrent }) => {
 			movieDetails.torrents[2].hash.toLowerCase(),
 			"/home/cookies/webtorrent"
 		);
+		addMessage(`Started downloading: ${movieDetails.title_long}!`, 'success');
 	};
 
 	useEffect(() => {
@@ -110,6 +112,7 @@ const MovieScreen = ({ startNewTorrent }) => {
 const mapDispatchToProps = (dispatch) => ({
 	startNewTorrent: (torrentName, magnetURI, infoHash, path) =>
 		dispatch(startNewTorrent(torrentName, magnetURI, infoHash, path)),
+	addMessage: (message, type) => dispatch(addMessage(message, type)),
 });
 
-export default connect((state) => {}, mapDispatchToProps)(MovieScreen);
+export default connect((state) => ({}), mapDispatchToProps)(MovieScreen);

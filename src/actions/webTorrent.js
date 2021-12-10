@@ -2,7 +2,7 @@ const { ipcRenderer } = window.require("electron");
 
 export const startNewTorrent = (torrentName, magnetURI, infoHash, path) => {
 	return (dispatch, getState) => {
-		const state = getState();
+		const state = getState().torrents;
 		const existingTorrent = state.find(
 			(torrent) => torrent.infoHash === infoHash
 		);
@@ -63,7 +63,7 @@ export const stopTorrent = (magnetURI) => {
 };
 
 export const deleteTorrent = (magnetURI) => {
-	ipcRenderer.send("wt-destory-torrent", decodeURI(magnetURI));
+	ipcRenderer.send("wt-destroy-torrent", decodeURI(magnetURI));
 	return {
 		type: "DELETE_TORRENT",
 		magnetURI,

@@ -4,6 +4,7 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
 // componenets
 import SideNav from "./components/SideNav";
+import AlertMessages from "./components/AlertMessages";
 
 // screens
 import MoviesScreen from "./screens/MoviesScreen";
@@ -34,6 +35,7 @@ function App({ torrents, startTorrent }) {
 
 	return (
 		<div className="App">
+			<AlertMessages />
 			<Router>
 				<SideNav
 					moviesScreen={<MoviesScreen />}
@@ -41,21 +43,30 @@ function App({ torrents, startTorrent }) {
 					downloadsScreen={<DownloadsScreen />}
 					changeScreenHandler={changeScreenHandler}
 				/>
-				<Switch>
-					<Route path="/movie/:movieID">
-						<MovieScreen />
-					</Route>
-					<Route path="/">
-						<div className="MainScreen">{selectedScreen}</div>
-					</Route>
-				</Switch>
+				<div
+					style={{
+						position: "relative",
+						width: "100%",
+						height: "100vh",
+						zIndex: 0,
+					}}
+				>
+					<Switch>
+						<Route path="/movie/:movieID">
+							<MovieScreen />
+						</Route>
+						<Route path="/">
+							<div className="MainScreen">{selectedScreen}</div>
+						</Route>
+					</Switch>
+				</div>
 			</Router>
 		</div>
 	);
 }
 
 const mapStateToProps = (state) => ({
-	torrents: state,
+	torrents: state.torrents,
 });
 
 const mapDispatchToProps = (dispatch) => ({

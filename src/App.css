@@ -8,15 +8,15 @@ body {
   height: 100%;
   width: 100%;
   display: flex;
-  position: fixed;
+  overflow: hidden;
+  position: relative;
 }
 
 .MainScreen {
-  overflow-x: hidden;
-  overflow-y: auto;
   height: 100%;
-  padding-left: 2vw;
-  width: 100%;
+  margin-left: 2%;
+  width: 98%;
+  z-index: 0;
 }
 
 .SideNav {

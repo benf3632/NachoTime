@@ -85,7 +85,7 @@ ipcMain.on("wt-stop-torrenting", (event, magnetURI) => {
 	torrent.destroy({ destroyStore: false });
 });
 
-ipcMain.on("wt-destory-torrent", (event, magnetURI) => {
+ipcMain.on("wt-destroy-torrent", (event, magnetURI) => {
 	if (!magnetURI) return;
 	const torrent = client.get(magnetURI);
 	torrent.destroy({ destroyStore: true });

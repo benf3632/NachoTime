@@ -118,7 +118,7 @@ const DownloadsScreen = ({
 };
 
 const mapStateToProps = (state) => ({
-	torrents: state,
+	torrents: state.torrents,
 });
 
 const mapDispatchToProps = (dispatch) => ({
