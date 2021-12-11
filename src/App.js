@@ -55,6 +55,9 @@ function App({ torrents, startTorrent }) {
 						<Route path="/movie/:movieID">
 							<MovieScreen />
 						</Route>
+						{/* <Route path="/buffer/:torrentInfoHash"> */}
+						{/* 	<BufferScreen /> */}
+						{/* </Route> */}
 						<Route path="/">
 							<div className="MainScreen">{selectedScreen}</div>
 						</Route>

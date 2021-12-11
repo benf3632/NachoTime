@@ -3,6 +3,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const url = require("url");
 const WebTorrent = require("webtorrent");
 const util = require("util");
+const { spawn } = require("child_process");
 
 const client = new WebTorrent();
 let prevProgress = null;
@@ -40,6 +41,10 @@ app.on("ready", () => {
 	createWindow();
 });
 
+const openVLC = (vlcPath, filePath) => {
+	spawn(vlcPath, [filePath], { detached: true });
+};
+
 app.on("window-all-closed", () => {
 	if (process.platform != "darwin") {
 		app.quit();
@@ -50,6 +55,10 @@ app.on("activate", () => {
 	if (mainWindow === null) {
 		createWindow();
 	}
+});
+
+ipcMain.on("open-vlc", (event, vlcPath, filePath) => {
+	openVLC(vlcPath, filePath);
 });
 
 // Web Torrents events
