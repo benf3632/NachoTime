@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useCallback, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { MdOutlineArrowBackIos } from "react-icons/md";
@@ -32,6 +32,7 @@ const fetchMovieDetails = async (movieId) => {
 
 const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	let { movieID } = useParams();
+	let history = useHistory();
 	const [movieDetails, setMovieDetails] = useState(null);
 	const [coverLoading, setCoverLoading] = useState(true);
 
@@ -39,22 +40,56 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		setCoverLoading(false);
 	};
 
-	const handleDownloadMovieClick = () => {
+	const startTorrenting = () => {
 		const torrentToDownload = movieDetails.torrents[2];
 		const torrentId = `magnet:?xt=urn:btih:${torrentToDownload.hash}&${trackers}`;
-		const torrentExists = torrents.some((torrent) => torrent.infoHash === torrentToDownload.hash.toLowerCase());
-		if (torrentExists) {
-			addMessage("The Movie is already in downloads!", "error");
-			return;
-		}
 		startNewTorrent(
 			`${torrentToDownload.title_long} (${torrentToDownload.quality})`,
 			torrentId,
 			torrentToDownload.hash.toLowerCase(),
 			"/home/cookies/webtorrent"
 		);
-		addMessage(`Started downloading: ${movieDetails.title_long}!`, 'success');
 	};
+
+	const handleDownloadMovieClick = () => {
+		const torrentToDownload = movieDetails.torrents[2];
+		const torrentExists = torrents.some(
+			(torrent) =>
+				torrent.infoHash === torrentToDownload.hash.toLowerCase()
+		);
+		if (torrentExists && !torrentExists.stopped) {
+			addMessage("The Movie is already in downloads!", "error");
+			return;
+		}
+		startTorrenting();
+		addMessage(
+			`Started downloading: ${movieDetails.title_long}!`,
+			"success"
+		);
+	};
+
+	const handleWatchMovieClick = () => {
+		const torrentToDownload = movieDetails.torrents[2];
+		const torrentExists = torrents.some(
+			(torrent) =>
+				torrent.infoHash === torrentToDownload.hash.toLowerCase()
+		);
+		if (!torrentExists || torrentExists.stopped) {
+			startTorrenting();
+		}
+		// TODO: fix location
+		history.push(`/buffer/${torrentToDownload.hash.toLowerCase()}`, {
+			bufferLoadedCallback: watchWithVLC,
+		});
+	};
+
+	const watchWithVLC = useCallback((torrentInfoHash) => {
+		console.log("Watching using VLC! ", torrentInfoHash);
+	}, []);
+
+	const watchWithWebPlayer = useCallback((torrentInfoHash) => {
+		console.log("Watching using web player! ", torrentInfoHash);
+	}, []);
 
 	useEffect(() => {
 		const fetchMovie = async () => {
@@ -101,7 +136,9 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 						<p>{movieDetails && movieDetails.description_full}</p>
 					</div>
 					<div>
-						<MaterialButton>Watch Movie</MaterialButton>
+						<MaterialButton onClick={handleWatchMovieClick}>
+							Watch Movie
+						</MaterialButton>
 						<MaterialButton
 							onClick={handleDownloadMovieClick}
 							style={{ marginLeft: "1%" }}

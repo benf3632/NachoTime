@@ -11,6 +11,7 @@ import MoviesScreen from "./screens/MoviesScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import MovieScreen from "./screens/MovieScreen";
 import DownloadsScreen from "./screens/DownloadsScreen";
+import BufferScreen from "./screens/BufferScreen";
 
 // actions
 import { startTorrent } from "./actions/webTorrent";
@@ -52,13 +53,13 @@ function App({ torrents, startTorrent }) {
 					}}
 				>
 					<Switch>
-						<Route path="/movie/:movieID">
+						<Route replace path="/movie/:movieID">
 							<MovieScreen />
 						</Route>
-						{/* <Route path="/buffer/:torrentInfoHash"> */}
-						{/* 	<BufferScreen /> */}
-						{/* </Route> */}
-						<Route path="/">
+						<Route replace path="/buffer/:torrentInfoHash">
+							<BufferScreen />
+						</Route>
+						<Route replace path="/">
 							<div className="MainScreen">{selectedScreen}</div>
 						</Route>
 					</Switch>
