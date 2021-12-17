@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Animate } from "react-move";
 
 const AnimatedProgressProvider = ({

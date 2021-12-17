@@ -53,7 +53,7 @@ const DownloadsScreen = ({
 			updateTorrents(progress.torrents);
 		});
 		return () => ipcRenderer.removeAllListeners("wt-progress");
-	}, []);
+	}, [updateTorrents]);
 
 	return (
 		<div
