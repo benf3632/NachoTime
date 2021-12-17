@@ -17,6 +17,7 @@ const { ipcRenderer } = window.require("electron");
 const BufferScreen = ({ torrents, updateTorrents }) => {
 	const [torrentProgress, setTorrentProgess] = useState(0.0);
 	const [prevTorrentProgess, setPrevTorrentProgress] = useState(0.0);
+	const [finishedBuffering, setFinishedBuffering] = useState(false);
 	let location = useLocation();
 	const { torrentInfoHash } = useParams();
 
@@ -26,7 +27,7 @@ const BufferScreen = ({ torrents, updateTorrents }) => {
 			updateTorrents(progress.torrents);
 		});
 		return () => ipcRenderer.removeAllListeners("wt-progress");
-	}, [torrentInfoHash]);
+	}, [torrentInfoHash, updateTorrents]);
 
 	// check for current torrent's progress
 	useEffect(() => {
@@ -36,24 +37,33 @@ const BufferScreen = ({ torrents, updateTorrents }) => {
 
 		if (!currentTorrent) return;
 
-		setPrevTorrentProgress(torrentProgress);
-		setTorrentProgess(currentTorrent.progress);
-
 		if (currentTorrent.progress >= 0.05) {
-			// location.state.bufferLoadedCallback(torrentInfoHash);
-			// TODO: Fix location
-			console.log(location);
-
+			if (!finishedBuffering) {
+				location.state.bufferLoadedCallback(currentTorrent);
+				setTorrentProgess(0.05);
+				setFinishedBuffering(true);
+			}
+		} else {
+			setPrevTorrentProgress(torrentProgress);
+			setTorrentProgess(currentTorrent.progress);
 		}
-	}, [torrents]);
+	}, [
+		torrents,
+		torrentProgress,
+		prevTorrentProgess,
+		location,
+		torrentInfoHash,
+		finishedBuffering,
+	]);
 
 	return (
 		<div className="BufferScreenContainer">
 			<div className="BufferProgressBar">
-			<AnimatedCirucularProgressbar
-				valueStart={prevTorrentProgess / 0.05 * 10}
-				valueEnd={torrentProgress / 0.05 * 10}
-			/>
+				<AnimatedCirucularProgressbar
+					valueStart={Math.floor((prevTorrentProgess / 0.05) * 100)}
+					valueEnd={Math.floor((torrentProgress / 0.05) * 100)}
+				/>
+				{finishedBuffering ? <p>Opening VLC</p> : <p>Buffering ...</p>}
 			</div>
 		</div>
 	);

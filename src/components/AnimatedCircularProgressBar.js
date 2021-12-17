@@ -1,3 +1,4 @@
+import {useEffect} from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -10,8 +11,8 @@ const AnimatedCirucularProgressbar = ({ valueStart, valueEnd }) => {
 		<AnimatedProgressProvider
 			valueStart={valueStart}
 			valueEnd={valueEnd}
-			duration={1.4}
-			easeFunction={easeQuadInOut}
+			duration={0.5}
+			easingFunction={easeQuadInOut}
 		>
 			{(value) => {
 				const roundedValue = Math.round(value);

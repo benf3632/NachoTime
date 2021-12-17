@@ -44,7 +44,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "concurrently -k \"BROWSER=none npm start\" \"npm:start-electron\"",
-    "start-electron": "wait-on tcp:3000 && ELECTRON_START_URL=http://localhost:3000 electron .",
+    "start-electron": "ELECTRON_START_URL=http://localhost:3000 electron .",
     "build-electron": "cp -r electron/. build/electron",
     "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
     "package-mac": "electron-builder build --mac -c.extraMetadata.main=build/electron/main.js --publish never"

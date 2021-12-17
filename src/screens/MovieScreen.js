@@ -18,6 +18,9 @@ import MaterialButton from "../components/MaterialButton";
 // css
 import "./MovieScreen.css";
 
+// electron
+const { ipcRenderer } = window.require("electron");
+
 // consts
 const trackers =
 	"tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337";
@@ -41,7 +44,7 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	};
 
 	const startTorrenting = () => {
-		const torrentToDownload = movieDetails.torrents[2];
+		const torrentToDownload = movieDetails.torrents[0];
 		const torrentId = `magnet:?xt=urn:btih:${torrentToDownload.hash}&${trackers}`;
 		startNewTorrent(
 			`${torrentToDownload.title_long} (${torrentToDownload.quality})`,
@@ -52,7 +55,7 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	};
 
 	const handleDownloadMovieClick = () => {
-		const torrentToDownload = movieDetails.torrents[2];
+		const torrentToDownload = movieDetails.torrents[0];
 		const torrentExists = torrents.some(
 			(torrent) =>
 				torrent.infoHash === torrentToDownload.hash.toLowerCase()
@@ -69,7 +72,9 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	};
 
 	const handleWatchMovieClick = () => {
-		const torrentToDownload = movieDetails.torrents[2];
+		console.log(movieDetails);
+		const torrentToDownload = movieDetails.torrents[0];
+		console.log("TORRENT: ", torrentToDownload);
 		const torrentExists = torrents.some(
 			(torrent) =>
 				torrent.infoHash === torrentToDownload.hash.toLowerCase()
@@ -77,15 +82,22 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		if (!torrentExists || torrentExists.stopped) {
 			startTorrenting();
 		}
-		// TODO: fix location
-		history.push(`/buffer/${torrentToDownload.hash.toLowerCase()}`, {
-			bufferLoadedCallback: watchWithVLC,
+		console.log("NEW TORRENT: ", torrentToDownload);
+		history.push({
+			pathname: `/buffer/${torrentToDownload.hash.toLowerCase()}`,
+			state: {
+				bufferLoadedCallback: watchWithVLC,
+			},
 		});
 	};
 
-	const watchWithVLC = useCallback((torrentInfoHash) => {
-		console.log("Watching using VLC! ", torrentInfoHash);
-	}, []);
+	const watchWithVLC = (torrent) => {
+		if (!torrent) {
+			addMessage("Torrent doesn't exists!", "error");
+		}
+
+		ipcRenderer.send("open-vlc", "vlc", torrent.file.path);
+	};
 
 	const watchWithWebPlayer = useCallback((torrentInfoHash) => {
 		console.log("Watching using web player! ", torrentInfoHash);
