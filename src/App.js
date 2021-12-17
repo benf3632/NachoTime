@@ -12,6 +12,7 @@ import FavoritesScreen from "./screens/FavoritesScreen";
 import MovieScreen from "./screens/MovieScreen";
 import DownloadsScreen from "./screens/DownloadsScreen";
 import BufferScreen from "./screens/BufferScreen";
+import PlayerScreen from "./screens/PlayerScreen";
 
 // actions
 import { startTorrent } from "./actions/webTorrent";
@@ -58,6 +59,9 @@ function App({ torrents, startTorrent }) {
 						</Route>
 						<Route replace path="/buffer/:torrentInfoHash">
 							<BufferScreen />
+						</Route>
+						<Route path="/player/:filePath">
+							<PlayerScreen />
 						</Route>
 						<Route replace path="/">
 							<div className="MainScreen">{selectedScreen}</div>

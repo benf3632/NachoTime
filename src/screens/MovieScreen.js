@@ -95,11 +95,15 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		);
 		if (!torrentExists || torrentExists.stopped) {
 			startTorrenting();
+			addMessage(
+				`Started downloading: ${movieDetails.title_long}!`,
+				"success"
+			);
 		}
 		history.push({
 			pathname: `/buffer/${torrentToDownload.hash.toLowerCase()}`,
 			state: {
-				bufferLoadedCallback: watchWithVLC,
+				bufferLoadedCallback: watchWithWebPlayer,
 			},
 		});
 	};
@@ -112,11 +116,12 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		ipcRenderer.send("open-vlc", "vlc", torrent.file.path);
 	};
 
-	const watchWithWebPlayer = useCallback((torrentInfoHash) => {
-		console.log("Watching using web player! ", torrentInfoHash);
-	}, []);
+	const watchWithWebPlayer = (torrent) => {
+		console.log("Watching using web player! ", torrent);
+		history.replace(`/player/${encodeURIComponent(torrent.file.path)}`);
+	};
 
-	const handleQualitySelectionChange = (value, action) => {
+	const handleQualitySelectionChange = (value) => {
 		setSelectedQuality(value);
 	};
 
