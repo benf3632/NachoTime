@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Select from "react-select";
 
 // actions
 import { startNewTorrent } from "../actions/webTorrent";
@@ -38,13 +39,15 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	let history = useHistory();
 	const [movieDetails, setMovieDetails] = useState(null);
 	const [coverLoading, setCoverLoading] = useState(true);
+	const [movieQuality, setMovieQuality] = useState(null);
+	const [selectedQuality, setSelectedQuality] = useState(null);
 
 	const handleCoverLoaded = () => {
 		setCoverLoading(false);
 	};
 
 	const startTorrenting = () => {
-		const torrentToDownload = movieDetails.torrents[0];
+		const torrentToDownload = getBestSeedMovie();
 		const torrentId = `magnet:?xt=urn:btih:${torrentToDownload.hash}&${trackers}`;
 		startNewTorrent(
 			`${torrentToDownload.title_long} (${torrentToDownload.quality})`,
@@ -55,7 +58,7 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	};
 
 	const handleDownloadMovieClick = () => {
-		const torrentToDownload = movieDetails.torrents[0];
+		const torrentToDownload = getBestSeedMovie();
 		const torrentExists = torrents.some(
 			(torrent) =>
 				torrent.infoHash === torrentToDownload.hash.toLowerCase()
@@ -71,10 +74,21 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		);
 	};
 
+	const getBestSeedMovie = () => {
+		console.log(selectedQuality);
+		const qualityTorrents = movieDetails.torrents.filter(
+			(torrent) => torrent.quality === selectedQuality.value
+		);
+
+		const bestSeedMovie = qualityTorrents.reduce(
+			(prev, current) => (current.seed > prev.seed ? current : prev),
+			qualityTorrents[0]
+		);
+		return bestSeedMovie;
+	};
+
 	const handleWatchMovieClick = () => {
-		console.log(movieDetails);
-		const torrentToDownload = movieDetails.torrents[0];
-		console.log("TORRENT: ", torrentToDownload);
+		const torrentToDownload = getBestSeedMovie();
 		const torrentExists = torrents.some(
 			(torrent) =>
 				torrent.infoHash === torrentToDownload.hash.toLowerCase()
@@ -82,7 +96,6 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		if (!torrentExists || torrentExists.stopped) {
 			startTorrenting();
 		}
-		console.log("NEW TORRENT: ", torrentToDownload);
 		history.push({
 			pathname: `/buffer/${torrentToDownload.hash.toLowerCase()}`,
 			state: {
@@ -103,9 +116,26 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		console.log("Watching using web player! ", torrentInfoHash);
 	}, []);
 
+	const handleQualitySelectionChange = (value, action) => {
+		setSelectedQuality(value);
+	};
+
 	useEffect(() => {
 		const fetchMovie = async () => {
 			const movie = await fetchMovieDetails(movieID);
+
+			// get available qualities
+			const movieQualitySet = new Set();
+			movie.torrents.forEach((torrent) => {
+				movieQualitySet.add(torrent.quality);
+			});
+
+			const movieQualityOptions = Array.from(movieQualitySet).map(
+				(quality) => ({ value: quality, label: quality })
+			);
+			setMovieQuality(movieQualityOptions);
+			setSelectedQuality(movieQualityOptions[0]);
+
 			console.log(movie);
 			setMovieDetails(movie);
 		};
@@ -148,15 +178,31 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 						<p>{movieDetails && movieDetails.description_full}</p>
 					</div>
 					<div>
-						<MaterialButton onClick={handleWatchMovieClick}>
-							Watch Movie
-						</MaterialButton>
-						<MaterialButton
-							onClick={handleDownloadMovieClick}
-							style={{ marginLeft: "1%" }}
+						<div
+							style={{
+								width: "11%",
+								paddingBottom: "1%",
+							}}
 						>
-							Download Movie
-						</MaterialButton>
+							<Select
+								value={selectedQuality}
+								className="QualitySelect"
+								isLoading={!movieQuality}
+								options={movieQuality}
+								onChange={handleQualitySelectionChange}
+							/>
+						</div>
+						<div>
+							<MaterialButton onClick={handleWatchMovieClick}>
+								Watch Movie
+							</MaterialButton>
+							<MaterialButton
+								onClick={handleDownloadMovieClick}
+								style={{ marginLeft: "1%" }}
+							>
+								Download Movie
+							</MaterialButton>
+						</div>
 					</div>
 				</div>
 			</div>
