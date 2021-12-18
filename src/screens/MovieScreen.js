@@ -117,7 +117,6 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	};
 
 	const watchWithWebPlayer = (torrent) => {
-		console.log("Watching using web player! ", torrent);
 		history.replace(`/player/${encodeURIComponent(torrent.file.path)}`);
 	};
 
@@ -185,7 +184,7 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 					<div>
 						<div
 							style={{
-								width: "11%",
+								width: "120px",
 								paddingBottom: "1%",
 							}}
 						>

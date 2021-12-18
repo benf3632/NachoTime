@@ -13,14 +13,18 @@ import MovieScreen from "./screens/MovieScreen";
 import DownloadsScreen from "./screens/DownloadsScreen";
 import BufferScreen from "./screens/BufferScreen";
 import PlayerScreen from "./screens/PlayerScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 
 // actions
 import { startTorrent } from "./actions/webTorrent";
+import { setSetting } from "./actions/settings";
 
 // css
 import "./App.css";
 
-function App({ torrents, startTorrent }) {
+const { ipcRenderer } = window.require("electron");
+
+function App({ torrents, settings, setSetting, startTorrent }) {
 	const [selectedScreen, setSelectedScreen] = useState(<MoviesScreen />);
 
 	const changeScreenHandler = (screen) => {
@@ -28,6 +32,10 @@ function App({ torrents, startTorrent }) {
 	};
 
 	useEffect(() => {
+		if (settings.torrentsDownloadPath === undefined) {
+			const userDataPath = ipcRenderer.sendSync("get-userdata-path");
+			setSetting("torrentsDownloadPath", userDataPath + "/Downloads");
+		}
 		torrents
 			.filter((torrent) => !torrent.stopped)
 			.forEach((torrent) => {
@@ -43,6 +51,7 @@ function App({ torrents, startTorrent }) {
 					moviesScreen={<MoviesScreen />}
 					favoritesScreen={<FavoritesScreen />}
 					downloadsScreen={<DownloadsScreen />}
+					settingsScreen={<SettingsScreen />}
 					changeScreenHandler={changeScreenHandler}
 				/>
 				<div
@@ -75,10 +84,13 @@ function App({ torrents, startTorrent }) {
 
 const mapStateToProps = (state) => ({
 	torrents: state.torrents,
+	settings: state.settings,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	startTorrent: (magnetURI) => dispatch(startTorrent(magnetURI)),
+	setSetting: (settingName, settingValue) =>
+		dispatch(setSetting(settingName, settingValue)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -21,10 +21,11 @@ import nacho from "../assets/nacho.png";
 import "react-pro-sidebar/dist/css/styles.css";
 import "../App.css";
 
-const SideNav = ({ moviesScreen, favoritesScreen, downloadsScreen, changeScreenHandler }) => {
+const SideNav = ({ moviesScreen, favoritesScreen, downloadsScreen, settingsScreen, changeScreenHandler }) => {
 	const [collapsed, setCollapsed] = useState(true);
 	let history = useHistory();
-	const onMenuItemClicked = (screen) => {
+
+	const handleMenuItemClick = (screen) => {
 		history.replace("/");
 		changeScreenHandler(screen);
 	};
@@ -87,19 +88,19 @@ const SideNav = ({ moviesScreen, favoritesScreen, downloadsScreen, changeScreenH
 					<MenuItem
 						active={true}
 						icon={<BiCameraMovie />}
-						onClick={() => onMenuItemClicked(moviesScreen)}
+						onClick={() => handleMenuItemClick(moviesScreen)}
 					>
 						Movies
 					</MenuItem>
 					<MenuItem
 						icon={<FaHeart />}
-						onClick={() => onMenuItemClicked(favoritesScreen)}
+						onClick={() => handleMenuItemClick(favoritesScreen)}
 					>
 						Favorites
 					</MenuItem>
 					<MenuItem
 						icon={<FaDownload />}
-						onClick={() => onMenuItemClicked(downloadsScreen)}
+						onClick={() => handleMenuItemClick(downloadsScreen)}
 					>
 						Downloads
 					</MenuItem>
@@ -107,7 +108,7 @@ const SideNav = ({ moviesScreen, favoritesScreen, downloadsScreen, changeScreenH
 			</SidebarContent>
 			<SidebarFooter>
 				<Menu>
-					<MenuItem icon={<FiSettings />}>Settings</MenuItem>
+					<MenuItem onClick={() => handleMenuItemClick(settingsScreen)} icon={<FiSettings />}>Settings</MenuItem>
 				</Menu>
 			</SidebarFooter>
 		</ProSidebar>

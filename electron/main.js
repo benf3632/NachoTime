@@ -1,5 +1,5 @@
 const path = require("path");
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const url = require("url");
 const WebTorrent = require("webtorrent");
 const util = require("util");
@@ -56,6 +56,21 @@ app.on("activate", () => {
 	if (mainWindow === null) {
 		createWindow();
 	}
+});
+
+// getpath
+ipcMain.on("get-userdata-path", (event) => {
+	const userDataPath = app.getPath("userData");
+	event.returnValue = userDataPath;
+});
+
+// dialog event
+ipcMain.handle("select-folder", async (event, defaultPath) => {
+	const selectedFolder = await dialog.showOpenDialog({
+		options: { title: "Select Folder", defaultPath, buttonLabel: "Select" },
+		properties: ["openDirectory"],
+	});
+	return selectedFolder;
 });
 
 ipcMain.on("open-vlc", (event, vlcPath, filePath) => {

@@ -15,6 +15,7 @@ import "./index.css";
 // reducers
 import webTorrent from "./reducers/webTorrent";
 import messages from "./reducers/messagesReducer";
+import settings from "./reducers/settings";
 
 import { throttle } from "lodash";
 
@@ -24,7 +25,7 @@ import { loadState, saveState } from "./localStorage";
 const persistedState = loadState();
 
 // create store
-const store = createStore(combineReducers({torrents: webTorrent, messages}), persistedState, applyMiddleware(thunk));
+const store = createStore(combineReducers({torrents: webTorrent, messages, settings}), persistedState, applyMiddleware(thunk));
 
 // save store every 1 second
 store.subscribe(

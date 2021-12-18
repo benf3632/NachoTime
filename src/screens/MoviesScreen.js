@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Loader from "react-loader-spinner";
 
 // componenets
@@ -71,6 +71,10 @@ const MoviesScreen = () => {
 			}
 		}
 	};
+
+	useEffect(() => {
+		loadMovies(0);
+	}, [])
 
 	return (
 		<div style={{ height: "100%", overflow: "hidden" }}>
