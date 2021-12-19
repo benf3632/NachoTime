@@ -17,6 +17,7 @@ const SettingsScreen = ({ settings, setSetting }) => {
 			currentPath
 		);
 		if (selectedFolder.canceled) return;
+		console.log(selectedFolder.filePaths[0]);
 		setSetting(settingName, selectedFolder.filePaths[0]);
 	};
 
