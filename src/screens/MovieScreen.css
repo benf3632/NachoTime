@@ -51,8 +51,12 @@
 	background-color: #29b6f6;
 }
 
+
 .QualitySelect {
-	background-color: #29b6f6;
-	color: black;
+	background-color: white;
+	width: 120px;
+	color: white;
+	height: 45px;
 }
+
 

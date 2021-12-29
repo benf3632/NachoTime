@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import Select from "react-select";
+import Select from "@mui/material/Select";
+import { MenuItem } from "@mui/material";
 
 // actions
 import { startNewTorrent } from "../actions/webTorrent";
@@ -77,7 +78,7 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 	const getBestSeedMovie = () => {
 		console.log(selectedQuality);
 		const qualityTorrents = movieDetails.torrents.filter(
-			(torrent) => torrent.quality === selectedQuality.value
+			(torrent) => torrent.quality === selectedQuality
 		);
 
 		const bestSeedMovie = qualityTorrents.reduce(
@@ -120,8 +121,8 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 		history.replace(`/player/${encodeURIComponent(torrent.file.path)}`);
 	};
 
-	const handleQualitySelectionChange = (value) => {
-		setSelectedQuality(value);
+	const handleQualitySelectionChange = (event) => {
+		setSelectedQuality(event.target.value);
 	};
 
 	useEffect(() => {
@@ -138,7 +139,7 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 				(quality) => ({ value: quality, label: quality })
 			);
 			setMovieQuality(movieQualityOptions);
-			setSelectedQuality(movieQualityOptions[0]);
+			setSelectedQuality(movieQualityOptions[0].value);
 
 			console.log(movie);
 			setMovieDetails(movie);
@@ -181,20 +182,24 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
 						<p>{movieDetails && movieDetails.genres.join(" - ")}</p>
 						<p>{movieDetails && movieDetails.description_full}</p>
 					</div>
-					<div>
+					<div style={{}}>
 						<div
 							style={{
 								width: "120px",
 								paddingBottom: "1%",
 							}}
 						>
+
 							<Select
-								value={selectedQuality}
 								className="QualitySelect"
-								isLoading={!movieQuality}
-								options={movieQuality}
+								id="quality"
+								value={selectedQuality ?? "loading"}
 								onChange={handleQualitySelectionChange}
-							/>
+							>
+								{movieQuality && movieQuality.map((quality, index) =>
+									<MenuItem id={index} value={quality.value}>{quality.label}</MenuItem>)}
+							</Select>
+
 						</div>
 						<div>
 							<MaterialButton onClick={handleWatchMovieClick}>
