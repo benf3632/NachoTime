@@ -38,7 +38,7 @@ const fetchMovieDetails = async (movieId) => {
   return json.data.movie;
 };
 
-const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
+const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
   let { movieID } = useParams();
   let history = useHistory();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -109,9 +109,10 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
   const watchWithVLC = useCallback((torrent) => {
     if (!torrent) {
       addMessage("Torrent doesn't exists!", "error");
+      return;
     }
 
-    ipcRenderer.send("open-vlc", "vlc", torrent.file.path);
+    ipcRenderer.send("open-vlc", settings.vlcPath ?? "vlc", torrent.file.path);
   });
 
   const watchWithWebPlayer = useCallback((torrent) => {
@@ -129,6 +130,16 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
   };
 
   useEffect(() => {
+    const watchMethods = [
+      {
+        value: "WebPlayer",
+        label: <img src={Nacho} style={{ width: "20px", height: "20px" }} />,
+        method: watchWithWebPlayer,
+      },
+      { value: "VLC", label: <SiVlcmediaplayer />, method: watchWithVLC },
+    ];
+    setWatchMethodOptions(watchMethods);
+    setSelectedWatchMethod(watchMethods[0]);
     const fetchMovie = async () => {
       const movie = await fetchMovieDetails(movieID);
 
@@ -148,16 +159,6 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
       setMovieDetails(movie);
     };
     fetchMovie();
-    const watchMethods = [
-      {
-        value: "WebPlayer",
-        label: <img src={Nacho} style={{ width: "20px", height: "20px" }} />,
-        method: watchWithWebPlayer,
-      },
-      { value: "VLC", label: <SiVlcmediaplayer />, method: watchWithVLC },
-    ];
-    setWatchMethodOptions(watchMethods);
-    setSelectedWatchMethod(watchMethods[0]);
   }, [movieID]);
 
   return (
@@ -174,8 +175,8 @@ const MovieScreen = ({ torrents, startNewTorrent, addMessage }) => {
               color="#202020"
             >
               <Skeleton
-                width={300}
-                height={300}
+                width={400}
+                height={600}
                 className="MovieScreenMovieCover"
               />
             </SkeletonTheme>
@@ -258,6 +259,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   torrents: state.torrents,
+  settings: state.settings,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieScreen);
