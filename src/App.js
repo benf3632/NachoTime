@@ -44,6 +44,7 @@ function App({ torrents, settings, setSetting, startTorrent }) {
           break;
         case "windows":
           setSetting("vlcPath", "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
+          break;
         default:
           setSetting("vlcPath", "");
           break;

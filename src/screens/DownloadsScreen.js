@@ -110,6 +110,7 @@ const DownloadsScreen = ({
                       src={Nacho}
                       className="ClickableIcon"
                       onClick={() => handleClickWebPlayerWatch(torrent)}
+                      alt="nacho"
                     />
                     <SiVlcmediaplayer
                       className="ClickableIcon"

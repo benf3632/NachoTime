@@ -21,7 +21,6 @@ import Nacho from "../assets/nacho.png";
 
 // css
 import "./MovieScreen.css";
-import { methodOf } from "lodash";
 
 // electron
 const { ipcRenderer } = window.require("electron");
@@ -106,18 +105,28 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
     });
   };
 
-  const watchWithVLC = useCallback((torrent) => {
-    if (!torrent) {
-      addMessage("Torrent doesn't exists!", "error");
-      return;
-    }
+  const watchWithVLC = useCallback(
+    (torrent) => {
+      if (!torrent) {
+        addMessage("Torrent doesn't exists!", "error");
+        return;
+      }
 
-    ipcRenderer.send("open-vlc", settings.vlcPath ?? "vlc", torrent.file.path);
-  });
+      ipcRenderer.send(
+        "open-vlc",
+        settings.vlcPath ?? "vlc",
+        torrent.file.path
+      );
+    },
+    [settings.vlcPath, addMessage]
+  );
 
-  const watchWithWebPlayer = useCallback((torrent) => {
-    history.replace(`/player/${encodeURIComponent(torrent.file.path)}`);
-  });
+  const watchWithWebPlayer = useCallback(
+    (torrent) => {
+      history.replace(`/player/${encodeURIComponent(torrent.file.path)}`);
+    },
+    [history]
+  );
 
   const handleQualitySelectionChange = (event) => {
     setSelectedQuality(event.target.value);
@@ -133,7 +142,13 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
     const watchMethods = [
       {
         value: "WebPlayer",
-        label: <img src={Nacho} style={{ width: "20px", height: "20px" }} />,
+        label: (
+          <img
+            alt="nacho"
+            src={Nacho}
+            style={{ width: "20px", height: "20px" }}
+          />
+        ),
         method: watchWithWebPlayer,
       },
       { value: "VLC", label: <SiVlcmediaplayer />, method: watchWithVLC },
@@ -159,7 +174,7 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
       setMovieDetails(movie);
     };
     fetchMovie();
-  }, [movieID]);
+  }, [movieID, watchWithVLC, watchWithWebPlayer]);
 
   return (
     <div className="MovieScreenContainer">
@@ -186,6 +201,7 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
             style={coverLoading ? { display: "none" } : {}}
             onLoad={handleCoverLoaded}
             src={movieDetails && movieDetails.large_cover_image}
+            alt="movieCover"
           />
         </div>
         <div className="MovieScreenMovieDetailsContainer">
