@@ -59,4 +59,13 @@
 	height: 45px;
 }
 
+.WatchMethodSelect {
+	background-color: rgb(33, 150, 243);
+	color: white;
+	height: 36px;
+}
 
+.MovieButtons {
+	display: flex;
+	align-items: center;
+}
