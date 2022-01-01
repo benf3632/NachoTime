@@ -19,6 +19,7 @@
     "lodash": "^4.17.21",
     "npm": "^8.3.0",
     "opensubtitles-api": "^5.1.2",
+    "prop-types": "^15.8.0",
     "react": "^17.0.2",
     "react-circular-progressbar": "^2.0.4",
     "react-dom": "^17.0.2",
@@ -50,7 +51,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently -k \"BROWSER=none npm start\" \"npm:start-electron\"",
+    "dev": "concurrently -k \"BROWSER=none yarn start\" \"yarn:start-electron\"",
     "start-electron": "wait-on tcp:127.0.0.1:3000 && ELECTRON_START_URL=http://localhost:3000 electron .",
     "build-electron": "cp -r electron/. build/electron",
     "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
@@ -78,6 +79,7 @@
     "concurrently": "^6.2.1",
     "electron": "^14.0.0",
     "electron-builder": "^22.11.7",
+    "eslint-config-react-app": "^7.0.0",
     "wait-on": "^6.0.0"
   },
   "build": {
@@ -94,5 +96,6 @@
       "target": "msi",
       "icon": "electron/icon.png"
     }
-  }
+  },
+  "packageManager": "yarn@3.1.1"
 }
