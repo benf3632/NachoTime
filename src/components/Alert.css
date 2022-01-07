@@ -1,47 +1,48 @@
 .alert {
-	padding: 2%;
-	color: gray;
-	font-weight: 500;
-	margin-top: 2%;
-	margin-bottom: 2%;
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	animation-duration: 0.5s;
-	height: 50px;
+  padding: 2%;
+  color: gray;
+  font-weight: 500;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-duration: 0.5s;
+  height: 50px;
 }
 
 .close {
-	color: gray;
-	font-size: 1rem;
-	border: none;
-	background-color: transparent;
-	cursor: pointer;
+  color: gray;
+  font-size: 1rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .alert-success {
-	background-color: #80e27e;
+  background-color: #00c853;
+  color: white;
 }
 
 .alert-error {
-	background-color: #d32f2f;
-	color: white;
+  background-color: #d32f2f;
+  color: white;
 }
 
 @keyframes fadeInRight {
-	0% {
-		right: -300px;
-		/* transform: translateX(10%); */
-		/* height: 0%; */
-	}
-	100% {
-		/* transform: translateX(0%); */
-		right: 0;
-		/* height: 20%; */
-	}
+  0% {
+    right: -300px;
+    /* transform: translateX(10%); */
+    /* height: 0%; */
+  }
+  100% {
+    /* transform: translateX(0%); */
+    right: 0;
+    /* height: 20%; */
+  }
 }
 
 .alert-fade-in {
-	animation-name: fadeInRight;
+  animation-name: fadeInRight;
 }
