@@ -1,0 +1,83 @@
+.SettingsScreenContainer {
+  width: 100%;
+  height: 100%;
+  padding-top: 1%;
+  color: white;
+  padding-right: 1%;
+}
+
+.SettingsScreenTitle {
+  font-size: 1.75em;
+  font-weight: 700;
+}
+
+.SettingsContainer {
+  padding-top: 1%;
+}
+
+.SettingsContainer > hr {
+  border-color: gray;
+  margin-inline-end: 2%;
+}
+
+.SettingsSection {
+  padding-bottom: 1%;
+}
+
+.SettingsSection > hr {
+  border-color: gray;
+  margin-inline-end: 2%;
+}
+
+.SettingsSectionTitle {
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+.Setting {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1%;
+}
+
+.SettingLabel {
+  color: white;
+  font-size: 1rem;
+  font-weight: 400;
+  padding-right: 1%;
+  width: 250px;
+}
+
+.FolderInput {
+  display: flex;
+  align-items: center;
+  min-width: 420px;
+  max-width: 700px;
+}
+
+.FolderPath {
+  background-color: #50555e;
+  flex: 1;
+  height: 20px;
+  padding: 5px;
+  color: white;
+  font-weight: 400;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 1rem;
+}
+
+.FolderIcon {
+  color: #50555e;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  transition: 0.5s;
+  padding-left: 1%;
+  font-size: 1rem;
+}
+
+.FolderIcon:hover {
+  color: white;
+}

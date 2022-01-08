@@ -1,0 +1,41 @@
+.AlertMessages {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	transition: flex 0.3s ease-out;
+	width: 300px;
+}
+
+.alert-enter {
+	opacity: 0.01;
+}
+
+.alert-enter.alert-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+
+.alert-exit {
+	opacity: 1;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	margin-bottom: 20px;
+	height: 50px;
+}
+
+.alert-exit.alert-exit-active {
+	opacity: 0.01;
+	overflow: hidden;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	height: 0px;
+	transition: opacity 300ms ease-in,
+				padding-top 300ms ease-in,
+				padding-bottom 300ms ease-in,
+				margin-bottom 300ms ease-in,
+				height 300ms ease-in;
+}

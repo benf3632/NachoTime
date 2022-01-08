@@ -1,17 +1,44 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+// redux
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
+
+// components
+import App from "./App";
+
+// css
+import "./index.css";
+
+// reducers
+import webTorrent from "./reducers/webTorrent";
+import messages from "./reducers/messagesReducer";
+import settings from "./reducers/settings";
+
+import { throttle } from "lodash";
+
+import { loadState, saveState } from "./localStorage";
+
+// load state
+const persistedState = loadState();
+
+// create store
+const store = createStore(combineReducers({torrents: webTorrent, messages, settings}), persistedState, applyMiddleware(thunk));
+
+// save store every 1 second
+store.subscribe(
+	throttle(() => {
+		saveState(store.getState());
+	}, 1000)
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(
+	<React.StrictMode>
+		<Provider store={store}>
+			<App />
+		</Provider>
+	</React.StrictMode>,
+	document.getElementById("root")
+);

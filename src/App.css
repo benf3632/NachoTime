@@ -1,17 +1,28 @@
 body {
   height: 100vh;
-  background-color: #282c34;
+  background-color: #17181b;
+  font-family: sans-serif;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .App {
   height: 100%;
+  width: 100%;
   display: flex;
+  overflow: hidden;
   position: relative;
 }
 
 .MainScreen {
-  text-align: center;
-  flex-grow: 1;
+  height: 100%;
+  margin-left: 2%;
+  width: 98%;
+  z-index: 0;
 }
 
 .SideNav {

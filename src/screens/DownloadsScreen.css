@@ -1,0 +1,54 @@
+.TorrentsProgressContainer {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 10%;
+  padding-top: 4%;
+}
+
+.DownloadsEmpty {
+  margin-right: 0%;
+  padding-top: 0%;
+  height: 100%;
+}
+
+.TorrentProgress {
+  background-color: #424242;
+  min-width: 50%;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-top: 1%;
+}
+
+.TorrentProgressInfoContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.TorrentActions {
+  display: flex;
+  justify-content: space-between;
+  width: 80px;
+}
+
+.NachoImage {
+  width: 25px;
+}
+
+.ClickableIcon {
+  cursor: pointer;
+  color: grey;
+  transition: 0.5s;
+  flex-direction: row;
+  width: 15px;
+  height: 15px;
+}
+
+.ClickableIcon:hover {
+  color: white;
+}

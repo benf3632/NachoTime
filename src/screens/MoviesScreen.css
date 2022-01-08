@@ -1,0 +1,27 @@
+.Search {
+  width: 15%;
+  height: 30px;
+  border: 3px;
+  display: flex;
+  align-items: center;
+  border-style: solid;
+  justify-content: space-around;
+  border-color: #5f6f7d;
+  border-radius: 25px;
+  transition: 0.3s ease;
+}
+
+.Search input {
+  width: 80%;
+  height: 85%;
+  border: none;
+  display: block;
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #5f6f7d;
+  background-color: transparent;
+  line-height: normal;
+  outline: none;
+  -webkit-appearance: none;
+}

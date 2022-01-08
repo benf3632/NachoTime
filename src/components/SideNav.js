@@ -7,21 +7,39 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-import { FaListUl, FaHeart } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
+
+// icons
+import { FaListUl, FaHeart, FaDownload } from "react-icons/fa";
 import { BiCameraMovie } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
+
+// assets
 import nacho from "../assets/nacho.png";
+
+// css
 import "react-pro-sidebar/dist/css/styles.css";
 import "../App.css";
 
-const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
+const SideNav = ({
+  moviesScreen,
+  downloadsScreen,
+  settingsScreen,
+  changeScreenHandler,
+}) => {
   const [collapsed, setCollapsed] = useState(true);
+  let history = useHistory();
 
+  const handleMenuItemClick = (screen) => {
+    history.replace("/");
+    changeScreenHandler(screen);
+  };
   return (
     <ProSidebar
-      style={{ height: "100vh" }}
+      style={{ height: "100vh", position: "relative" }}
       collapsed={collapsed}
       breakPoint="md"
+      width="300px"
     >
       <SidebarHeader>
         <div
@@ -71,22 +89,34 @@ const SideNav = ({ moviesScreen, favoritesScreen, changeScreenHandler }) => {
       <SidebarContent>
         <Menu>
           <MenuItem
+            active={true}
             icon={<BiCameraMovie />}
-            onClick={() => changeScreenHandler(moviesScreen)}
+            onClick={() => handleMenuItemClick(moviesScreen)}
           >
             Movies
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             icon={<FaHeart />}
-            onClick={() => changeScreenHandler(favoritesScreen)}
+            onClick={() => handleMenuItemClick(favoritesScreen)}
           >
             Favorites
+          </MenuItem> */}
+          <MenuItem
+            icon={<FaDownload />}
+            onClick={() => handleMenuItemClick(downloadsScreen)}
+          >
+            Downloads
           </MenuItem>
         </Menu>
       </SidebarContent>
       <SidebarFooter>
         <Menu>
-          <MenuItem icon={<FiSettings />}>Settings</MenuItem>
+          <MenuItem
+            onClick={() => handleMenuItemClick(settingsScreen)}
+            icon={<FiSettings />}
+          >
+            Settings
+          </MenuItem>
         </Menu>
       </SidebarFooter>
     </ProSidebar>
