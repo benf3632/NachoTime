@@ -52,7 +52,7 @@ const DownloadsScreen = ({
   };
 
   const handleTorrentStarting = (magnetUri) => {
-    startTorrent(magnetUri);
+    startTorrent(magnetUri, settings.torrentsDownloadPath);
   };
 
   const handleOpenVLC = (filePath) => {
@@ -151,7 +151,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateTorrents: (torrents) => dispatch(updateTorrents(torrents)),
   stopTorrent: (magnetURI) => dispatch(stopTorrent(magnetURI)),
-  startTorrent: (magnetURI) => dispatch(startTorrent(magnetURI)),
+  startTorrent: (magnetURI, torrentPath) =>
+    dispatch(startTorrent(magnetURI, torrentPath)),
   deleteTorrent: (magnetURI) => dispatch(deleteTorrent(magnetURI)),
 });
 

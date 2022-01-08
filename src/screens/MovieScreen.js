@@ -60,10 +60,11 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
     const torrentToDownload = getBestSeedMovie();
     const torrentId = `magnet:?xt=urn:btih:${torrentToDownload.hash}&${trackers}`;
     startNewTorrent(
+      movieDetails.id,
       `${torrentToDownload.title_long} (${torrentToDownload.quality})`,
       torrentId,
       torrentToDownload.hash.toLowerCase(),
-      "/home/cookies/webtorrent"
+      settings.torrentsDownloadPath
     );
   };
 
@@ -325,8 +326,8 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  startNewTorrent: (torrentName, magnetURI, infoHash, path) =>
-    dispatch(startNewTorrent(torrentName, magnetURI, infoHash, path)),
+  startNewTorrent: (movieID, torrentName, magnetURI, infoHash, path) =>
+    dispatch(startNewTorrent(movieID, torrentName, magnetURI, infoHash, path)),
   addMessage: (message, type) => dispatch(addMessage(message, type)),
 });
 

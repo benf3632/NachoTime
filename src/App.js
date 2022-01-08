@@ -55,7 +55,7 @@ function App({ torrents, settings, setSetting, startTorrent }) {
     torrents
       .filter((torrent) => !torrent.stopped)
       .forEach((torrent) => {
-        startTorrent(torrent.magnetUri);
+        startTorrent(torrent.magnetUri, settings.torrentsDownloadPath);
       });
   }, []);
 
@@ -104,7 +104,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  startTorrent: (magnetURI) => dispatch(startTorrent(magnetURI)),
+  startTorrent: (magnetURI, torrentPath) =>
+    dispatch(startTorrent(magnetURI, torrentPath)),
   setSetting: (settingName, settingValue) =>
     dispatch(setSetting(settingName, settingValue)),
 });

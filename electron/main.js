@@ -88,10 +88,10 @@ ipcMain.on("open-vlc", (event, vlcPath, filePath) => {
 // Web Torrents events
 
 // start torrenting event
-ipcMain.on("wt-start-torrenting", (event, torrentId) => {
+ipcMain.on("wt-start-torrenting", (event, torrentId, torrentPath) => {
   if (!torrentId) return;
   const torrent = client.add(torrentId, {
-    path: path.join(app.getPath("userData"), "downloads"),
+    path: torrentPath,
   });
   torrent.on("ready", () => {
     event.reply("wt-torrenting-started", {
