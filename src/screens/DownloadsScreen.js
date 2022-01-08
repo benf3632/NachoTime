@@ -55,11 +55,6 @@ const DownloadsScreen = ({
     startTorrent(magnetUri, settings.torrentsDownloadPath);
   };
 
-  // const handleOpenVLC = (filePath) => {
-  //   console.log(filePath);
-  //   ipcRenderer.send("open-vlc", settings.vlcPath ?? "vlc", filePath);
-  // };
-
   const handleClickWebPlayerWatch = (torrent) => {
     history.push(`/movie/${torrent.movieID}`);
   };
@@ -112,10 +107,6 @@ const DownloadsScreen = ({
                       onClick={() => handleClickWebPlayerWatch(torrent)}
                       alt="nacho"
                     />
-                    {/* <SiVlcmediaplayer
-                      className="ClickableIcon"
-                      onClick={() => handleOpenVLC(torrent.file.path)}
-                    /> */}
                     {torrent.stopped ? (
                       <AiOutlinePlayCircle
                         onClick={() => handleTorrentStarting(torrent.magnetUri)}
