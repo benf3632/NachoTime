@@ -254,7 +254,11 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
             <p className="MovieScreenTitle">
               {movieDetails && movieDetails.title_long}
             </p>
-            <p>{movieDetails && movieDetails.genres.join(" - ")}</p>
+            <p>
+              {movieDetails && movieDetails.genres.join(" - ")}
+              {" - "}
+              {movieDetails && movieDetails.runtime} min
+            </p>
             <p>{movieDetails && movieDetails.description_full}</p>
           </div>
           <div>
