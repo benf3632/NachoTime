@@ -8,6 +8,9 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import Select from "@mui/material/Select";
 import { MenuItem } from "@mui/material";
 
+// providers
+import OpenSubtitlesProvider from "../lib/providers/subtitles/opensubtitles";
+
 // actions
 import { startNewTorrent } from "../actions/webTorrent";
 import { addMessage } from "../actions/messages";
@@ -46,6 +49,8 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
   const [selectedQuality, setSelectedQuality] = useState(null);
   const [selectedWatchMethod, setSelectedWatchMethod] = useState(null);
   const [watchMethodOptions, setWatchMethodOptions] = useState(null);
+  const [subtitles, setSubtitles] = useState([]);
+  const [selectedSubtitle, setSelectedSubtitle] = useState(null);
 
   const handleCoverLoaded = () => {
     setCoverLoading(false);
@@ -97,8 +102,14 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
       startTorrenting();
       addMessage(`Started downloading: ${movieDetails.title_long}!`, "success");
     }
+    let path = `/buffer/${torrentToDownload.hash.toLowerCase()}`;
+    if (selectedSubtitle.langcode !== "disable") {
+      path += `/${movieDetails.imdb_code}/${selectedSubtitle.langcode}`;
+      console.log(path);
+    }
+
     history.push({
-      pathname: `/buffer/${torrentToDownload.hash.toLowerCase()}`,
+      pathname: path,
       state: {
         bufferLoadedCallback: selectedWatchMethod.method,
       },
@@ -106,7 +117,7 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
   };
 
   const watchWithVLC = useCallback(
-    (torrent) => {
+    (torrent, imdbid, langcode) => {
       if (!torrent) {
         addMessage("Torrent doesn't exists!", "error");
         return;
@@ -122,8 +133,12 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
   );
 
   const watchWithWebPlayer = useCallback(
-    (torrent) => {
-      history.replace(`/player/${encodeURIComponent(torrent.file.path)}`);
+    (torrent, imdbid, langcode) => {
+      let path = `/player/${encodeURIComponent(torrent.file.path)}`;
+      if (imdbid && langcode) {
+        path += `/${imdbid}/${langcode}`;
+      }
+      history.replace(path);
     },
     [history]
   );
@@ -135,6 +150,12 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
   const handleSelectWatchMethod = (event) => {
     setSelectedWatchMethod(
       watchMethodOptions.find((method) => method.value === event.target.value)
+    );
+  };
+
+  const handleSelectSubtitle = (event) => {
+    setSelectedSubtitle(
+      subtitles.find((subtitle) => subtitle.langcode === event.target.value)
     );
   };
 
@@ -176,6 +197,25 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
     fetchMovie();
   }, [movieID, watchWithVLC, watchWithWebPlayer]);
 
+  useEffect(() => {
+    const fetchSubtitles = async () => {
+      console.log("Fetching Subtitles!");
+      if (movieDetails === null) return;
+
+      const result = await OpenSubtitlesProvider.getAllSubtitles(
+        movieDetails.imdb_code
+      );
+      if (result.error !== null) {
+        console.log(result.error);
+        return;
+      }
+
+      setSubtitles(result.subtitles);
+      setSelectedSubtitle(result.subtitles[0]);
+    };
+    fetchSubtitles();
+  }, [movieDetails]);
+
   return (
     <div className="MovieScreenContainer">
       <Link to="/" className="MovieScreenBackIconContainer">
@@ -212,26 +252,43 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
             <p>{movieDetails && movieDetails.genres.join(" - ")}</p>
             <p>{movieDetails && movieDetails.description_full}</p>
           </div>
-          <div style={{}}>
-            <div
-              style={{
-                width: "120px",
-                paddingBottom: "1%",
-              }}
-            >
-              <Select
-                className="QualitySelect"
-                id="quality"
-                value={selectedQuality ?? "loading"}
-                onChange={handleQualitySelectionChange}
+          <div>
+            <div className="MovieOptionsWrapper">
+              <div
+                style={{
+                  width: "120px",
+                  paddingBottom: "1%",
+                }}
               >
-                {movieQuality &&
-                  movieQuality.map((quality, index) => (
-                    <MenuItem id={index} value={quality.value}>
-                      {quality.label}
-                    </MenuItem>
-                  ))}
-              </Select>
+                <Select
+                  className="QualitySelect"
+                  id="quality"
+                  value={selectedQuality ?? ""}
+                  onChange={handleQualitySelectionChange}
+                >
+                  {movieQuality &&
+                    movieQuality.map((quality, index) => (
+                      <MenuItem id={index} value={quality.value}>
+                        {quality.label}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </div>
+              <div style={{ marginRight: "1%" }}>
+                <Select
+                  className="SubtitlesSelect"
+                  id="subtitles"
+                  value={selectedSubtitle ? selectedSubtitle.langcode : ""}
+                  onChange={handleSelectSubtitle}
+                >
+                  {subtitles.length > 0 &&
+                    subtitles.map((subtitle, index) => (
+                      <MenuItem id={index} value={subtitle.langcode}>
+                        {subtitle.lang}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </div>
             </div>
             <div className="MovieButtons">
               <MaterialButton onClick={handleWatchMovieClick}>

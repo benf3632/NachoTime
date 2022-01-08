@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import path from "path";
+import os from "os";
 
 // componenets
 import SideNav from "./components/SideNav";
@@ -23,7 +25,6 @@ import { setSetting } from "./actions/settings";
 import "./App.css";
 
 const { ipcRenderer } = window.require("electron");
-const os = window.require("os");
 
 function App({ torrents, settings, setSetting, startTorrent }) {
   const [selectedScreen, setSelectedScreen] = useState(<MoviesScreen />);
@@ -35,16 +36,17 @@ function App({ torrents, settings, setSetting, startTorrent }) {
   useEffect(() => {
     if (settings.torrentsDownloadPath === undefined) {
       const userDataPath = ipcRenderer.sendSync("get-userdata-path");
-      setSetting("torrentsDownloadPath", userDataPath + "/Downloads");
+      setSetting("torrentsDownloadPath", path.join(userDataPath, "/Downloads"));
     }
     if (settings.vlcPath === undefined) {
       switch (os.platform()) {
         case "linux":
           setSetting("vlcPath", "/usr/bin/vlc");
           break;
-        case "windows":
+        case "win32":
           setSetting("vlcPath", "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
           break;
+        // TODO: Add darwin default vlc path
         default:
           setSetting("vlcPath", "");
           break;
@@ -80,10 +82,10 @@ function App({ torrents, settings, setSetting, startTorrent }) {
             <Route replace path="/movie/:movieID">
               <MovieScreen />
             </Route>
-            <Route replace path="/buffer/:torrentInfoHash">
+            <Route replace path="/buffer/:torrentInfoHash/:imdbid?/:langcode?">
               <BufferScreen />
             </Route>
-            <Route path="/player/:filePath">
+            <Route path="/player/:filePath/:imdbid?/:langcode?">
               <PlayerScreen />
             </Route>
             <Route replace path="/">

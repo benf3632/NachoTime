@@ -15,66 +15,68 @@ import "./BufferScreen.css";
 const { ipcRenderer } = window.require("electron");
 
 const BufferScreen = ({ torrents, updateTorrents }) => {
-	const [torrentProgress, setTorrentProgess] = useState(0.0);
-	const [prevTorrentProgess, setPrevTorrentProgress] = useState(0.0);
-	const [finishedBuffering, setFinishedBuffering] = useState(false);
-	let location = useLocation();
-	const { torrentInfoHash } = useParams();
+  let location = useLocation();
+  const [torrentProgress, setTorrentProgess] = useState(0.0);
+  const [prevTorrentProgess, setPrevTorrentProgress] = useState(0.0);
+  const [finishedBuffering, setFinishedBuffering] = useState(false);
+  const { torrentInfoHash, imdbid, langcode } = useParams();
 
-	// listen for torrents progress
-	useEffect(() => {
-		ipcRenderer.on("wt-progress", (event, progress) => {
-			updateTorrents(progress.torrents);
-		});
-		return () => ipcRenderer.removeAllListeners("wt-progress");
-	}, [torrentInfoHash, updateTorrents]);
+  // listen for torrents progress
+  useEffect(() => {
+    ipcRenderer.on("wt-progress", (event, progress) => {
+      updateTorrents(progress.torrents);
+    });
+    return () => ipcRenderer.removeAllListeners("wt-progress");
+  }, [torrentInfoHash, updateTorrents]);
 
-	// check for current torrent's progress
-	useEffect(() => {
-		const currentTorrent = torrents.find(
-			(torrent) => torrent.infoHash === torrentInfoHash
-		);
+  // check for current torrent's progress
+  useEffect(() => {
+    const currentTorrent = torrents.find(
+      (torrent) => torrent.infoHash === torrentInfoHash
+    );
 
-		if (!currentTorrent) return;
+    if (!currentTorrent) return;
 
-		if (currentTorrent.progress >= 0.05) {
-			if (!finishedBuffering) {
-				location.state.bufferLoadedCallback(currentTorrent);
-				setTorrentProgess(0.05);
-				setFinishedBuffering(true);
-			}
-		} else {
-			setPrevTorrentProgress(torrentProgress);
-			setTorrentProgess(currentTorrent.progress);
-		}
-	}, [
-		torrents,
-		torrentProgress,
-		prevTorrentProgess,
-		location,
-		torrentInfoHash,
-		finishedBuffering,
-	]);
+    if (currentTorrent.progress >= 0.05) {
+      if (!finishedBuffering) {
+        location.state.bufferLoadedCallback(currentTorrent, imdbid, langcode);
+        setTorrentProgess(0.05);
+        setFinishedBuffering(true);
+      }
+    } else {
+      setPrevTorrentProgress(torrentProgress);
+      setTorrentProgess(currentTorrent.progress);
+    }
+  }, [
+    torrents,
+    torrentProgress,
+    prevTorrentProgess,
+    location,
+    torrentInfoHash,
+    finishedBuffering,
+    imdbid,
+    langcode,
+  ]);
 
-	return (
-		<div className="BufferScreenContainer">
-			<div className="BufferProgressBar">
-				<AnimatedCirucularProgressbar
-					valueStart={Math.floor((prevTorrentProgess / 0.05) * 100)}
-					valueEnd={Math.floor((torrentProgress / 0.05) * 100)}
-				/>
-				{finishedBuffering ? <p>Opening VLC</p> : <p>Buffering ...</p>}
-			</div>
-		</div>
-	);
+  return (
+    <div className="BufferScreenContainer">
+      <div className="BufferProgressBar">
+        <AnimatedCirucularProgressbar
+          valueStart={Math.floor((prevTorrentProgess / 0.05) * 100)}
+          valueEnd={Math.floor((torrentProgress / 0.05) * 100)}
+        />
+        {finishedBuffering ? <p>Opening VLC</p> : <p>Buffering ...</p>}
+      </div>
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => ({
-	torrents: state.torrents,
+  torrents: state.torrents,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	updateTorrents: (torrents) => dispatch(updateTorrents(torrents)),
+  updateTorrents: (torrents) => dispatch(updateTorrents(torrents)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BufferScreen);
