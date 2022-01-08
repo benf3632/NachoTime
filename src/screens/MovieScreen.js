@@ -87,7 +87,6 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
   };
 
   const getBestSeedMovie = () => {
-    console.log(selectedQuality);
     const qualityTorrents = movieDetails.torrents.filter(
       (torrent) => torrent.quality === selectedQuality
     );
@@ -111,7 +110,6 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
     let path = `/buffer/${torrentToDownload.hash.toLowerCase()}`;
     if (selectedSubtitle.langcode !== "disable") {
       path += `/${movieDetails.imdb_code}/${selectedSubtitle.langcode}`;
-      console.log(path);
     }
 
     history.push({
@@ -197,7 +195,6 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
       setMovieQuality(movieQualityOptions);
       setSelectedQuality(movieQualityOptions[0].value);
 
-      console.log(movie);
       setMovieDetails(movie);
     };
     fetchMovie();
@@ -205,14 +202,12 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
 
   useEffect(() => {
     const fetchSubtitles = async () => {
-      console.log("Fetching Subtitles!");
       if (movieDetails === null) return;
 
       const result = await OpenSubtitlesProvider.getAllSubtitles(
         movieDetails.imdb_code
       );
       if (result.error !== null) {
-        console.log(result.error);
         return;
       }
 

@@ -10,7 +10,7 @@ import AlertMessages from "./components/AlertMessages";
 
 // screens
 import MoviesScreen from "./screens/MoviesScreen";
-import FavoritesScreen from "./screens/FavoritesScreen";
+// import FavoritesScreen from "./screens/FavoritesScreen";
 import MovieScreen from "./screens/MovieScreen";
 import DownloadsScreen from "./screens/DownloadsScreen";
 import BufferScreen from "./screens/BufferScreen";
@@ -65,7 +65,7 @@ function App({ torrents, settings, setSetting, startTorrent }) {
       <Router>
         <SideNav
           moviesScreen={<MoviesScreen />}
-          favoritesScreen={<FavoritesScreen />}
+          // favoritesScreen={<FavoritesScreen />}
           downloadsScreen={<DownloadsScreen />}
           settingsScreen={<SettingsScreen />}
           changeScreenHandler={changeScreenHandler}

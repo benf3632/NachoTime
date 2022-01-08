@@ -47,7 +47,6 @@ class OpenSubtitlesProvider {
         imdbid: imdbid,
         limit: "best",
       });
-      console.log(result);
       let subtitles = Object.values(result).map((subtitle) => ({
         langcode: subtitle.langcode,
         lang: subtitle.lang,
@@ -68,4 +67,4 @@ class OpenSubtitlesProvider {
   }
 }
 
-module.exports = OpenSubtitlesProvider;
+export default OpenSubtitlesProvider;

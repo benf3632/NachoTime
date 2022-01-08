@@ -31,7 +31,7 @@ function createWindow() {
     icon: path.join(__dirname, "./icon.png"),
   });
   mainWindow.loadURL(startUrl);
-  // mainWindow.removeMenu();
+  mainWindow.removeMenu();
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
@@ -113,7 +113,6 @@ ipcMain.on("wt-start-torrenting", (event, torrentId, torrentPath) => {
 
 ipcMain.on("wt-stop-torrenting", (event, magnetURI) => {
   if (!magnetURI) return;
-  console.log("Stopping: ", magnetURI);
   const torrent = client.get(magnetURI);
   torrent.destroy({ destroyStore: false });
 });

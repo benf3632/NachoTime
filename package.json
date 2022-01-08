@@ -1,6 +1,6 @@
 {
   "name": "nachotime",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Stream movies from torrents with subtitles",
   "author": "benf3632",
   "private": true,
@@ -80,10 +80,13 @@
     "concurrently": "^6.2.1",
     "electron": "^14.0.0",
     "electron-builder": "^22.11.7",
+    "electron-builder-squirrel-windows": "^22.14.12",
     "eslint-config-react-app": "^7.0.0",
     "wait-on": "^6.0.0"
   },
   "build": {
+    "productName": "NachoTime",
+    "appId": "com.benf3632.NachoTime",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -94,7 +97,7 @@
       "owner": "benf3632"
     },
     "win": {
-      "target": "msi",
+      "target": ["nsis", "msi", "squirrel"],
       "icon": "electron/icon.png"
     }
   },

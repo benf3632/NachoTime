@@ -24,7 +24,6 @@ const PlayerScreen = () => {
         imdbid,
         langcode
       );
-      console.log(result.subtitles.length);
       setSubtitles(result.subtitles);
     };
     fetchSubtitles();

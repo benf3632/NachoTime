@@ -17,7 +17,6 @@ const SettingsScreen = ({ settings, setSetting }) => {
       currentPath
     );
     if (selectedFolder.canceled) return;
-    console.log(selectedFolder.filePaths[0]);
     setSetting(settingName, selectedFolder.filePaths[0]);
   };
 
@@ -83,13 +82,13 @@ const SettingsScreen = ({ settings, setSetting }) => {
           </div>
           <hr />
         </div>
-        <div className="SettingsSection">
+        {/* <div className="SettingsSection">
           <span className="SettingsSectionTitle">OpenSubtitles</span>
           <div className="Setting">
             <label className="SettingLabel">Usernme: </label>
           </div>
           <hr />
-        </div>
+        </div> */}
       </div>
     </div>
   );
