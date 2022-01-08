@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 
+// icons
+import { MdOutlineArrowBackIos } from "react-icons/md";
+
 // components
 import AnimatedCirucularProgressbar from "../components/AnimatedCircularProgressBar";
 
@@ -10,8 +13,6 @@ import { updateTorrents } from "../actions/webTorrent";
 
 // css
 import "./BufferScreen.css";
-import { Link } from "react-router-dom";
-import { MdOutlineArrowBackIos } from "react-icons/md";
 
 // electron
 const { ipcRenderer } = window.require("electron");
