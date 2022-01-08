@@ -1,7 +1,13 @@
 body {
   height: 100vh;
-  background-color: #17181B;
+  background-color: #17181b;
   font-family: sans-serif;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .App {

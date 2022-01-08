@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 
 // components
@@ -10,16 +10,23 @@ import { updateTorrents } from "../actions/webTorrent";
 
 // css
 import "./BufferScreen.css";
+import { Link } from "react-router-dom";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 
 // electron
 const { ipcRenderer } = window.require("electron");
 
 const BufferScreen = ({ torrents, updateTorrents }) => {
   let location = useLocation();
+  let history = useHistory();
   const [torrentProgress, setTorrentProgess] = useState(0.0);
   const [prevTorrentProgess, setPrevTorrentProgress] = useState(0.0);
   const [finishedBuffering, setFinishedBuffering] = useState(false);
   const { torrentInfoHash, imdbid, langcode } = useParams();
+
+  const handleBackButtonClick = () => {
+    history.goBack();
+  };
 
   // listen for torrents progress
   useEffect(() => {
@@ -60,6 +67,12 @@ const BufferScreen = ({ torrents, updateTorrents }) => {
 
   return (
     <div className="BufferScreenContainer">
+      <button
+        className="BufferScreenBackIconContainer"
+        onClick={handleBackButtonClick}
+      >
+        <MdOutlineArrowBackIos className="BufferScreenBackIcon" />
+      </button>
       <div className="BufferProgressBar">
         <AnimatedCirucularProgressbar
           valueStart={Math.floor((prevTorrentProgess / 0.05) * 100)}

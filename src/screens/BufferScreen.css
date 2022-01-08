@@ -1,15 +1,27 @@
 .BufferScreenContainer {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-	width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
 
 .BufferProgressBar {
-	width: 250px;
-	height: 250px;
-	color: white;
-	text-align: center;
+  width: 250px;
+  height: 250px;
+  color: white;
+  text-align: center;
 }
 
+.BufferScreenBackIconContainer {
+  position: absolute;
+  top: 10%;
+  left: 2%;
+}
+
+.BufferScreenBackIcon {
+  color: white;
+  width: 20px;
+  height: 20px;
+}

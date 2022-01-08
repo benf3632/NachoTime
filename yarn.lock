@@ -5877,7 +5877,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.2.6":
+"classnames@npm:^2.2.6, classnames@npm:^2.3.1":
   version: 2.3.1
   resolution: "classnames@npm:2.3.1"
   checksum: 14db8889d56c267a591f08b0834989fe542d47fac659af5a539e110cc4266694e8de86e4e3bbd271157dbd831361310a8293e0167141e80b0f03a0f175c80960
@@ -13150,6 +13150,7 @@ __metadata:
     "@testing-library/react": ^11.2.7
     "@testing-library/user-event": ^12.8.3
     "@types/react-redux": ^7.1.20
+    classnames: ^2.3.1
     concurrently: ^6.2.1
     d3-ease: ^3.0.1
     electron: ^14.0.0

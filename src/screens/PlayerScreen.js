@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { Player, ControlBar, ClosedCaptionButton } from "video-react";
+
+import CloseButton from "../components/CloseButton";
 
 import OpenSubtitlesProvider from "../lib/providers/subtitles/opensubtitles";
 
 import "video-react/dist/video-react.css";
 
 const PlayerScreen = () => {
+  let history = useHistory();
   let { filePath, imdbid, langcode } = useParams();
   const [subtitles, setSubtitles] = useState([]);
+
+  const handleCloseButtonClick = () => {
+    history.goBack();
+  };
 
   useEffect(() => {
     const fetchSubtitles = async () => {
@@ -38,7 +45,8 @@ const PlayerScreen = () => {
             />
           ))}
         <ControlBar autoHide>
-          <ClosedCaptionButton order={subtitles.length} />
+          <ClosedCaptionButton order={7} />
+          <CloseButton onClick={handleCloseButtonClick} order={9} />
         </ControlBar>
       </Player>
     </div>
