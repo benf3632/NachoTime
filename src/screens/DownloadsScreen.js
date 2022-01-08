@@ -120,7 +120,12 @@ const DownloadsScreen = ({
                     {
                       <FaTrashAlt
                         className="ClickableIcon"
-                        onClick={() => deleteTorrent(torrent.magnetUri)}
+                        onClick={() =>
+                          deleteTorrent(
+                            torrent.infoHash,
+                            settings.torrentsDownloadPath
+                          )
+                        }
                       />
                     }
                   </div>
@@ -143,7 +148,8 @@ const mapDispatchToProps = (dispatch) => ({
   stopTorrent: (magnetURI) => dispatch(stopTorrent(magnetURI)),
   startTorrent: (magnetURI, torrentPath) =>
     dispatch(startTorrent(magnetURI, torrentPath)),
-  deleteTorrent: (magnetURI) => dispatch(deleteTorrent(magnetURI)),
+  deleteTorrent: (infoHash, torrentPath) =>
+    dispatch(deleteTorrent(infoHash, torrentPath)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DownloadsScreen);

@@ -69,10 +69,26 @@ export const stopTorrent = (magnetURI) => {
   };
 };
 
-export const deleteTorrent = (magnetURI) => {
-  ipcRenderer.send("wt-destroy-torrent", decodeURI(magnetURI));
-  return {
-    type: "DELETE_TORRENT",
-    magnetURI,
+export const deleteTorrent = (infoHash, torrentPath) => {
+  return (dispatch, getState) => {
+    const { torrents } = getState();
+    const currentTorrent = torrents.find(
+      (torrent) => torrent.infoHash === infoHash
+    );
+    if (!currentTorrent.stopped) {
+      ipcRenderer.send(
+        "wt-start-torrenting",
+        currentTorrent.magnetURI,
+        torrentPath
+      );
+      ipcRenderer.send(
+        "wt-destroy-torrent",
+        decodeURI(currentTorrent.magnetURI)
+      );
+    }
+    dispatch({
+      type: "DELETE_TORRENT",
+      magnetURI: currentTorrent.magnetUri,
+    });
   };
 };
