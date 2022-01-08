@@ -7,7 +7,6 @@ import { useHistory } from "react-router";
 import { IoMdCloudDownload, IoMdCloudUpload } from "react-icons/io/";
 import { AiOutlinePauseCircle, AiOutlinePlayCircle } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
-import { SiVlcmediaplayer } from "react-icons/si";
 
 // actions
 import {

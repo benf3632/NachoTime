@@ -49,8 +49,13 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
   const [selectedQuality, setSelectedQuality] = useState(null);
   const [selectedWatchMethod, setSelectedWatchMethod] = useState(null);
   const [watchMethodOptions, setWatchMethodOptions] = useState(null);
-  const [subtitles, setSubtitles] = useState([]);
-  const [selectedSubtitle, setSelectedSubtitle] = useState(null);
+  const [subtitles, setSubtitles] = useState([
+    { langcode: "disable", lang: "None" },
+  ]);
+  const [selectedSubtitle, setSelectedSubtitle] = useState({
+    langcode: "disable",
+    lang: "None",
+  });
 
   const handleCoverLoaded = () => {
     setCoverLoading(false);
@@ -211,8 +216,7 @@ const MovieScreen = ({ torrents, settings, startNewTorrent, addMessage }) => {
         return;
       }
 
-      setSubtitles(result.subtitles);
-      setSelectedSubtitle(result.subtitles[0]);
+      setSubtitles((subtitles) => [...subtitles, ...result.subtitles]);
     };
     fetchSubtitles();
   }, [movieDetails]);
